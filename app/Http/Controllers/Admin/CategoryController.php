@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\Admin\Category;
 use Illuminate\Http\Request;
+use App\Models\Admin\Category;
+use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\Datatables;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
@@ -17,14 +18,27 @@ class CategoryController extends Controller
         $page ="Category";
         $data = Category::get();
         if ($request->ajax()) {
-            $data = Category::get();
+            $data = Category::latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
-                    return $actionBtn;
+                ->addColumn('image', function ($data) {
+                    if (file_exists($data->file_path)) {
+                        $url = asset($data->file_path);
+                        $title = $data->image;
+                        return '<a href="' . $url . '"><img src="' . $url . '"  class="image-fluid" width=80%;/ alt="' . $title . '"> </a>';
+                    } else {
+                        $url = url('default_image/not.jpg');
+                        $title = "image not found";
+                        return '<a href="' . $url . '"><img src="' . $url . '"  class="image-fluid" width=80%;/ alt="' . $title . '"> </a>';
+                    }
                 })
-                ->rawColumns(['action'])
+                ->addColumn('action', function($row){
+                    $edit = '<a href="' . route('admin.category.edit', $row->id) . '" class="edit btn btn-primary btn-sm m-1" title="Edit">Edit</a>';
+                    $delete =
+                        '<a href="' . route('admin.category.destroy', $row->id) . '"  title="Delete"  data-id="' . $row->id . '"  class="btn btn-danger btn-sm m-1 delete-btn">Delete</a>';
+                    return  $edit . " " . $delete;
+                })
+                ->rawColumns(['action','image'])
                 ->make(true);
         }
         return view('backend.pages.category.index',compact('page'));
@@ -43,7 +57,62 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $rules = [
+            'title' => 'required|unique:categories,title',
+        ];
+
+        // Validate the incoming request data
+        $validator = Validator::make($request->all(), $rules);
+
+        // Check if validation fails
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
+        if ($request->hasFile('image')) {
+            $this->validate($request, [
+                'image'=>'nullable|image|mimes:jpg,jpeg,png|max:1999',
+            ]);
+
+            $file = $request->file('image');
+            $image_name = md5(rand(1000, 10000));
+            $ext = strtolower($file->getClientOriginalExtension());
+            $image_full_name = $image_name . '.' . $ext;
+            $uploade_path = 'uploads/category/images/';
+            $image_url = $uploade_path . $image_full_name;
+            $file->move($uploade_path, $image_full_name);
+
+           Category::UpdateOrcreate(
+                [
+                    'id' => $request->data_id,
+                ],
+                [
+                    'title' => $request->title,
+                    'description' => $request->description,
+                    'image'=> $image_full_name,
+                    'file_path'=> $image_url,
+
+                ]
+            );
+        }
+        else{
+           Category::UpdateOrcreate(
+                [
+                    'id' => $request->data_id,
+                ],
+                [
+                    'title' => $request->title,
+                    'description' => $request->description,
+                ]
+            );
+        }
+
+        if ($request->data_id != '') {
+            return response()->json(['success'=> 'Category Updated.']);
+        } else {
+            return response()->json(['success'=> 'Category Added.']);
+        }
     }
 
     /**
@@ -73,8 +142,17 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, $id)
     {
-        //
+dd($request->all());
+        $record = Category::find($id);
+
+
+        if (!$record) {
+            return response()->json(['success' => 'Record not found.'], 404);
+        }
+
+        $record->delete();
+        return response()->json(['success' => 'Record deleted successfully.']);
     }
 }

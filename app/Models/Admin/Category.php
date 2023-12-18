@@ -12,7 +12,6 @@ class Category extends Model
         'title',
         'description',
         'image',
-        'image_enc',
         'file_path',
     ];
 }
