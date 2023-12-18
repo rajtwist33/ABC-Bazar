@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\ProfileController;
@@ -27,12 +29,10 @@ Route::get('/register', function () {
 
 
 Route::middleware(['auth'])->group(function () {
-        Route::get('/dashboard', function () {
-            return view('backend.layouts.main');
-        })->name('dashboard');
+      Route::resource('dashboard',DashboardController::class);
         Route::group(['namespace' => 'App\Http\Controllers\Admin', 'as' => 'admin.'], function () {
             Route::resources([
-
+                'category'=>CategoryController::class,
             ]);
         });
 
