@@ -33,9 +33,9 @@ class CategoryController extends Controller
                     }
                 })
                 ->addColumn('action', function($row){
-                    $edit = '<a href="' . route('admin.category.edit', $row->id) . '" class="edit btn btn-primary btn-sm m-1" title="Edit">Edit</a>';
+                    $edit = '<button class="edit btn btn-primary btn-sm m-1 edit-btn" data-id="' . $row->id . '" title="Edit">Edit</button>';
                     $delete =
-                        '<a href="' . route('admin.category.destroy', $row->id) . '"  title="Delete"  data-id="' . $row->id . '"  class="btn btn-danger btn-sm m-1 delete-btn">Delete</a>';
+                        '<button  title="Delete"  data-id="' . $row->id . '"  class="btn btn-danger btn-sm m-1 delete-btn">Move Trash</button>';
                     return  $edit . " " . $delete;
                 })
                 ->rawColumns(['action','image'])
@@ -58,18 +58,22 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
 
-        $rules = [
-            'title' => 'required|unique:categories,title',
-        ];
+            $rules = [
+                'title' => 'required|unique:categories,title',
+            ];
 
-        // Validate the incoming request data
-        $validator = Validator::make($request->all(), $rules);
 
-        // Check if validation fails
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 400);
-        }
 
+        if(!$request->data_id)
+            {
+                // Validate the incoming request data
+                $validator = Validator::make($request->all(), $rules);
+
+                // Check if validation fails
+                if ($validator->fails()) {
+                    return response()->json(['error' => $validator->errors()], 400);
+                }
+            }
         if ($request->hasFile('image')) {
             $this->validate($request, [
                 'image'=>'nullable|image|mimes:jpg,jpeg,png|max:1999',
@@ -126,9 +130,10 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Request $request, $id)
     {
-        //
+       $data_list = Category::find($id);
+       return response()->json(['data_list' => $data_list]);
     }
 
     /**
@@ -144,10 +149,7 @@ class CategoryController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-dd($request->all());
         $record = Category::find($id);
-
-
         if (!$record) {
             return response()->json(['success' => 'Record not found.'], 404);
         }

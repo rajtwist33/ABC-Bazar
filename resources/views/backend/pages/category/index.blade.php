@@ -88,9 +88,11 @@
             //Dropify
             var dropify = $('.dropify').dropify();
             var table = $('.data-table').DataTable();
+
             function reloadTable() {
-                 table.ajax.reload();
-             }
+                table.ajax.reload();
+            }
+
             function resetModal() {
                 $('#staticBackdrop').modal('show'); // Show the modal
                 $("#category_form")[0].reset(); // Reset the form fields
@@ -115,6 +117,7 @@
                 $('#submit_btn').text('wait');
                 var formData = new FormData();
                 formData.append('title', $('[name="title"]').val());
+                formData.append('data_id', $('[name="data_id"]').val());
                 formData.append('description', $('[name="description"]').val());
                 var dropifyFile = $('.dropify')[0].files[0];
                 formData.append('image', dropifyFile);
@@ -138,7 +141,8 @@
 
                     },
                     error: function(xhr, status, error) {
-                        var errorMessage = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error.title : 'An error occurred. Please try again.';
+                        var errorMessage = xhr.responseJSON && xhr.responseJSON.error ? xhr
+                            .responseJSON.error.title : 'An error occurred. Please try again.';
                         toastr.error(errorMessage);
                         $('#error_title').text(errorMessage);
                     }
@@ -146,7 +150,90 @@
 
                 $('#submit_btn').text('Submit');
             })
+
+            //Edit and Delete record
+            $('.data-table').on('click', '.delete-btn, .edit-btn', function() {
+                var category = $(this).data('id');
+                var row = $(this).closest('tr');
+
+                if ($(this).hasClass('delete-btn')) {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'You Data move to Trash!',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, Move it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Perform AJAX deletion
+                            $.ajax({
+                                type: 'DELETE',
+                                url: 'category/' + category,
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                                        'content')
+                                },
+                                success: function(response) {
+                                    row.remove();
+                                    toastr.success(response.success);
+                                    reloadTable();
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error(error);
+                                    Swal.fire('Error!',
+                                        'There was an error deleting the item.',
+                                        'error'
+                                    );
+                                }
+                            });
+                        }
+                    });
+                } else if ($(this).hasClass('edit-btn')) {
+                    console.log(category);
+                    $.ajax({
+                        type: 'GET',
+                        url: 'category/' + category + '/edit',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            var data_lists = response.data_list;
+                            console.log(data_lists);
+                            resetModal();
+                            $('#staticBackdrop').modal('show');
+                            $('#modal_title').text('Category: Edit');
+                            $('#title').val(data_lists.title);
+                            $('#data_id').val(data_lists.id);
+                            $('#summernote').summernote('code', data_lists.description);
+
+                            var imageUrl = "http://127.0.0.1:8000/" + data_lists.file_path;
+                            console.log(imageUrl);
+                            var dropify = $('#input-file').dropify({
+                                messages: {
+                                    'default': 'Drag and drop a file here or click',
+                                    'replace': 'Drag and drop or click to replace',
+                                    'remove': 'Remove',
+                                    'error': 'Ooops, something wrong happened.'
+                                }
+                            });
+                            dropify = dropify.data('dropify'); // Retrieve dropify instance
+                            dropify.settings.defaultFile = imageUrl;
+                            dropify.destroy();
+                            dropify.init();
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                            Swal.fire('Error!',
+                                'There was an error deleting the item.', 'error'
+                            );
+                        }
+                    });
+                }
+            });
+
+
         });
     </script>
-
 @endsection

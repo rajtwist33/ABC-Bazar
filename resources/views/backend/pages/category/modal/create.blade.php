@@ -10,19 +10,21 @@
             <div class="modal-body">
                 <form id="category_form">
                     <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Title</label>
-                        <input type="text" class="form-control" name="title" id="exampleInputEmail1"
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" class="form-control" name="title" id="title"
                             aria-describedby="emailHelp">
                         <span class="text-danger" id="error_title"></span>
                     </div>
                     <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Description</label>
-                        <textarea id="summernote" name="description"></textarea>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea id="summernote" name="description" ></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Image</label>
-                        <input type="file" name="image" class="dropify"  data-allowed-file-extensions="jpg jpeg png gif"/>
+                        <input type="file" name="image" class="dropify" id="input-file"  data-allowed-file-extensions="jpg jpeg png gif"/>
                     </div>
+                    <input type="hidden" class="form-control" name="data_id" id="data_id" value=""
+                            aria-describedby="emailHelp">
                 </form>
             </div>
             <div class="modal-footer">
