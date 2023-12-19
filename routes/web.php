@@ -29,14 +29,15 @@ Route::get('/register', function () {
 
 
 Route::middleware(['auth'])->group(function () {
-      Route::resource('dashboard',DashboardController::class);
+    Route::resource('dashboard',DashboardController::class);
         Route::group(['namespace' => 'App\Http\Controllers\Admin', 'as' => 'admin.'], function () {
             Route::resources([
                 'category'=>CategoryController::class,
             ]);
-        });
-
-
+    });
+    Route::get('trashed/category',[CategoryController::class,'trashed'])->name('admin.category.trashed');
+    Route::get('trashed/category/delete/{id}',[CategoryController::class,'forceDelete']);
+    Route::get('trashed/category/restore/{id}',[CategoryController::class,'restore']);
 });
 
 require __DIR__.'/auth.php';

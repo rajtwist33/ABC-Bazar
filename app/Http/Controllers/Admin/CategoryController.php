@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Admin\Category;
 use App\Http\Controllers\Controller;
@@ -10,9 +11,6 @@ use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         $page ="Category";
@@ -25,31 +23,36 @@ class CategoryController extends Controller
                     if (file_exists($data->file_path)) {
                         $url = asset($data->file_path);
                         $title = $data->image;
-                        return '<a href="' . $url . '"><img src="' . $url . '"  class="image-fluid" width=80%;/ alt="' . $title . '"> </a>';
+                        return '<a href="' . $url . '" target="_blank"><img src="' . $url . '"    class="image-fluid" width=80%;/ alt="' . $title . '"> </a>';
                     } else {
                         $url = url('default_image/not.jpg');
                         $title = "image not found";
-                        return '<a href="' . $url . '"><img src="' . $url . '"  class="image-fluid" width=80%;/ alt="' . $title . '"> </a>';
+                        return '<a href="' . $url . '" target="_blank"><img src="' . $url . '"  class="image-fluid" width=80%;/ alt="' . $title . '"> </a>';
                     }
+                })
+                ->addColumn('description', function($data){
+                    $description = Str::limit(strip_tags($data->description), 100);;
+                    return $description;
+
                 })
                 ->addColumn('action', function($row){
                     $edit = '<button class="edit btn btn-primary btn-sm m-1 edit-btn" data-id="' . $row->id . '" title="Edit">Edit</button>';
                     $delete =
-                        '<button  title="Delete"  data-id="' . $row->id . '"  class="btn btn-danger btn-sm m-1 delete-btn">Move Trash</button>';
+                        '<button  title="move trash"  data-id="' . $row->id . '"  class="btn btn-danger btn-sm m-1 delete-btn">Move Trash</button>';
                     return  $edit . " " . $delete;
                 })
-                ->rawColumns(['action','image'])
+                ->rawColumns(['action','image','description'])
                 ->make(true);
         }
         return view('backend.pages.category.index',compact('page'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
+
+
     public function create()
     {
-        //
+
     }
 
     /**
@@ -155,6 +158,55 @@ class CategoryController extends Controller
         }
 
         $record->delete();
+        return response()->json(['success' => 'Record Moved to Trash.']);
+    }
+    public function trashed(Request $request)
+    {
+        $page ="Category";
+        $data = Category::get();
+        if ($request->ajax()) {
+            $data = Category::onlyTrashed()->latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('image', function ($data) {
+                    if (file_exists($data->file_path)) {
+                        $url = asset($data->file_path);
+                        $title = $data->image;
+                        return '<a href="' . $url . '" target="_blank"><img src="' . $url . '"    class="image-fluid" width=80%;/ alt="' . $title . '"> </a>';
+                    } else {
+                        $url = url('default_image/not.jpg');
+                        $title = "image not found";
+                        return '<a href="' . $url . '" target="_blank"><img src="' . $url . '"  class="image-fluid" width=80%;/ alt="' . $title . '"> </a>';
+                    }
+                })
+                ->addColumn('description', function($data){
+                    $description = Str::limit(strip_tags($data->description), 100);;
+                    return $description;
+
+                })
+                ->addColumn('action', function($row){
+                    $edit = '<button class="edit btn btn-primary btn-sm m-1 edit-btn" data-id="' . $row->id . '" title="restore">Restore</button>';
+                    $delete =
+                        '<button  title="Delete"  data-id="' . $row->id . '"  class="btn btn-danger btn-sm m-1 delete-btn"> Permanent Delete</button>';
+                    return  $edit . " " . $delete;
+                })
+                ->rawColumns(['action','image','description'])
+                ->make(true);
+        }
+        return view('backend.pages.category.trashed.index',compact('page'));
+    }
+
+    public function forceDelete($id){
+        $data  = Category::where('id', $id)->withTrashed()->forceDelete();
+        if (!$data) {
+            return response()->json(['success' => 'Record not found.'], 404);
+        }
         return response()->json(['success' => 'Record deleted successfully.']);
     }
+
+    public function restore($id){
+        $data  = Category::where('id', $id)->withTrashed()->restore();
+        return response()->json(['success' => 'Record Restore successfully.']);
+    }
+
 }

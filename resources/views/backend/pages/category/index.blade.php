@@ -10,6 +10,7 @@
     @include('backend.pages.category.modal.create')
     <div class="container">
         <button type="button" class="float-right btn btn-success mb-2" id="category_btn">Add</button>
+        <a href="{{ route('admin.category.trashed') }}" class="float-right btn btn-danger mb-2">Trash</a>
         <table class="table data-table">
             <thead class="thead-dark">
                 <tr>
@@ -34,6 +35,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <script type="text/javascript">
+        //Untrashed Category
         $(function() {
             var table = $('.data-table').DataTable({
                 processing: true,
@@ -57,7 +59,8 @@
                     {
                         "className": "text-center",
                         data: 'description',
-                        name: 'description'
+                        name: 'description',
+
                     },
 
                     {
@@ -70,9 +73,6 @@
                 ]
             });
         });
-
-
-
         $(document).ready(function() {
             //Summernote
             $('#summernote').summernote({
@@ -106,6 +106,7 @@
             }
             $('#category_btn').on('click', function() {
                 resetModal();
+                $('#data_id').val('');
             })
             $('#modal_close, .btn-close').on('click', function() {
                 $('#staticBackdrop').modal('hide');
@@ -159,7 +160,7 @@
                 if ($(this).hasClass('delete-btn')) {
                     Swal.fire({
                         title: 'Are you sure?',
-                        text: 'You Data move to Trash!',
+                        text: 'Your Data move to Trash!',
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
@@ -232,8 +233,6 @@
                     });
                 }
             });
-
-
         });
     </script>
 @endsection

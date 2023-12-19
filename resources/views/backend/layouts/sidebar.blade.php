@@ -27,7 +27,7 @@
                     <span class="hide-menu">UI COMPONENTS</span>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{route('admin.category.index')}}" aria-expanded="false">
+                    <a class="sidebar-link {{ request()->is(['category*', 'trashed/category*']) ? 'active' : '' }}" href="{{route('admin.category.index')}}" aria-expanded="false">
                         <span>
                             <i class="ti ti-article"></i>
                         </span>
