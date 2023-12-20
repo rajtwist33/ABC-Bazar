@@ -27,7 +27,8 @@
                     <span class="hide-menu">UI COMPONENTS</span>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ request()->is(['category*', 'trashed/category*']) ? 'active' : '' }}" href="{{route('admin.category.index')}}" aria-expanded="false">
+                    <a class="sidebar-link {{ request()->is(['category*', 'trashed/category*']) ? 'active' : '' }}"
+                        href="{{ route('admin.category.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-article"></i>
                         </span>
@@ -35,11 +36,11 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="./ui-alerts.html" aria-expanded="false">
+                    <a class="sidebar-link {{ request()->is(['slider*']) ? 'active' : '' }}" href="{{ route('admin.slider.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-alert-circle"></i>
                         </span>
-                        <span class="hide-menu">Alerts</span>
+                        <span class="hide-menu">Slider</span>
                     </a>
                 </li>
                 <li class="sidebar-item">

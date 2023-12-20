@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\ProfileController;
-
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Models\Admin\Slider;
 
 //Clear Cache
 Route::get('/clear', function () {
@@ -33,11 +34,15 @@ Route::middleware(['auth'])->group(function () {
         Route::group(['namespace' => 'App\Http\Controllers\Admin', 'as' => 'admin.'], function () {
             Route::resources([
                 'category'=>CategoryController::class,
+                'slider'=>SliderController::class,
             ]);
     });
+    //Category
     Route::get('trashed/category',[CategoryController::class,'trashed'])->name('admin.category.trashed');
     Route::get('trashed/category/delete/{id}',[CategoryController::class,'forceDelete']);
     Route::get('trashed/category/restore/{id}',[CategoryController::class,'restore']);
+    //Slider
+    Route::get('slider/delete/{id}',[SliderController::class,'forceDelete']);
 });
 
 require __DIR__.'/auth.php';
