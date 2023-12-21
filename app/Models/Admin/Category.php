@@ -13,5 +13,6 @@ class Category extends Model
         'description',
         'image',
         'file_path',
+        'deleted_at',
     ];
 }

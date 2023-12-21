@@ -5,17 +5,20 @@
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropify/dist/css/dropify.min.css">
     <link href="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/min/dropzone.min.css" rel="stylesheet">
 @endsection
 @section('main')
     <div class="container">
-        <a href="{{ route('admin.category.index') }}" class="float-right btn btn-danger mb-2" id="trash">UnTrash</a>
-        <table class="table data-table">
+        <a href="{{ route('admin.product.create') }}" class="float-right btn btn-success mb-2"> Add Product</a>
+        <a href="{{ route('admin.product.trashed') }}" class="float-right btn btn-danger mb-2">Trash</a>
+        <table class="table data-table table-responsive">
             <thead class="thead-dark">
                 <tr>
                     <th>No</th>
-                    <th>Image</th>
-                    <th>Title</th>
-                    <th>Description</th>
+                    <th>Product Code</th>
+                    <th>Category</th>
+                    <th>Model</th>
+                    <th>Price</th>
                     <th width="105px">Action</th>
                 </tr>
             </thead>
@@ -31,13 +34,13 @@
     <script src="https://cdn.jsdelivr.net/npm/dropify"></script>
     <script src="https://cdn.jsdelivr.net/npm/toastr@2.1.4/toastr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
     <script type="text/javascript">
+        //Untrashed Category
         $(function() {
             var table = $('.data-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('admin.category.trashed') }}",
+                ajax: "{{ route('admin.product.index') }}",
                 columns: [{
                         "className": "text-center",
                         data: 'DT_RowIndex',
@@ -45,19 +48,23 @@
                     },
                     {
                         "className": "text-center",
-                        data: 'image',
-                        name: 'image'
+                        data: 'product_code',
+                        name: 'product_code'
                     },
                     {
                         "className": "text-center",
-                        data: 'title',
-                        name: 'title'
+                        data: 'category',
+                        name: 'category'
                     },
                     {
                         "className": "text-center",
-                        data: 'description',
-                        name: 'description',
-
+                        data: 'model',
+                        name: 'model',
+                    },
+                    {
+                        "className": "text-center",
+                        data: 'price',
+                        name: 'price',
                     },
 
                     {
@@ -72,35 +79,36 @@
         });
 
         $(document).ready(function() {
-            var table = $('.data-table').DataTable();
 
             function reloadTable() {
                 table.ajax.reload();
             }
-
             //Edit and Delete record
             $('.data-table').on('click', '.delete-btn, .edit-btn', function() {
-                var category = $(this).data('id');
+                var product = $(this).data('id');
                 var row = $(this).closest('tr');
+
                 if ($(this).hasClass('delete-btn')) {
                     Swal.fire({
                         title: 'Are you sure?',
-                        text: 'Permanent Delete!',
+                        text: 'Your Data move to Trash!',
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, Delete it!'
+                        confirmButtonText: 'Yes, Move it!'
                     }).then((result) => {
                         if (result.isConfirmed) {
+                            // Perform AJAX deletion
                             $.ajax({
-                                type: 'GET',
-                                url: 'category/delete/' + category,
+                                type: 'DELETE',
+                                url: 'product/' + product,
                                 headers: {
                                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
                                         'content')
                                 },
                                 success: function(response) {
+                                    row.remove();
                                     toastr.success(response.success);
                                     reloadTable();
                                 },
@@ -115,20 +123,42 @@
                         }
                     });
                 } else if ($(this).hasClass('edit-btn')) {
+                    console.log(category);
                     $.ajax({
                         type: 'GET',
-                        url: 'category/restore/' + category,
+                        url: 'category/' + category + '/edit',
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
                         success: function(response) {
-                            toastr.success(response.success);
-                            reloadTable();
+                            var data_lists = response.data_list;
+                            console.log(data_lists);
+                            resetModal();
+                            $('#staticBackdrop').modal('show');
+                            $('#modal_title').text('Category: Edit');
+                            $('#title').val(data_lists.title);
+                            $('#data_id').val(data_lists.id);
+                            $('#summernote').summernote('code', data_lists.description);
+
+                            var imageUrl = "http://127.0.0.1:8000/" + data_lists.file_path;
+                            console.log(imageUrl);
+                            var dropify = $('#input-file').dropify({
+                                messages: {
+                                    'default': 'Drag and drop a file here or click',
+                                    'replace': 'Drag and drop or click to replace',
+                                    'remove': 'Remove',
+                                    'error': 'Ooops, something wrong happened.'
+                                }
+                            });
+                            dropify = dropify.data('dropify'); // Retrieve dropify instance
+                            dropify.settings.defaultFile = imageUrl;
+                            dropify.destroy();
+                            dropify.init();
                         },
                         error: function(xhr, status, error) {
                             console.error(error);
                             Swal.fire('Error!',
-                                'There was an error restoring the item.', 'error'
+                                'There was an error deleting the item.', 'error'
                             );
                         }
                     });

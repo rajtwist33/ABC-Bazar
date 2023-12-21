@@ -9,7 +9,7 @@
 @section('main')
     <div class="container">
         <a href="{{ route('admin.category.index') }}" class="float-right btn btn-danger mb-2" id="trash">UnTrash</a>
-        <table class="table data-table">
+        <table class="table data-table table-responsive">
             <thead class="thead-dark">
                 <tr>
                     <th>No</th>

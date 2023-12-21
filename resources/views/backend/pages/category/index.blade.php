@@ -11,7 +11,7 @@
     <div class="container">
         <button type="button" class="float-right btn btn-success mb-2" id="category_btn">Add</button>
         <a href="{{ route('admin.category.trashed') }}" class="float-right btn btn-danger mb-2">Trash</a>
-        <table class="table data-table">
+        <table class="table data-table table-responsive">
             <thead class="thead-dark">
                 <tr>
                     <th>No</th>

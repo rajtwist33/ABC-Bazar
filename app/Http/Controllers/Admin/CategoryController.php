@@ -31,7 +31,12 @@ class CategoryController extends Controller
                     }
                 })
                 ->addColumn('description', function($data){
+                   if($data->description != ''){
                     $description = Str::limit(strip_tags($data->description), 100);;
+                   }
+                   else{
+                    $description ="___";
+                   }
                     return $description;
 
                 })
@@ -209,4 +214,8 @@ class CategoryController extends Controller
         return response()->json(['success' => 'Record Restore successfully.']);
     }
 
+    public function category_list(){
+        $categories = Category::whereNull('deleted_at')->get()->toArray();
+        return response()->json(['categories'=> $categories]);
+    }
 }
