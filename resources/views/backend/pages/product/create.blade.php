@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropify/dist/css/dropify.min.css">
     <link href="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/min/dropzone.min.css" rel="stylesheet">
+    
 @endsection
 @section('main')
     <div class="container">
@@ -70,7 +71,7 @@
             </div>
 
             <div class="col-md-12">
-                <label for="exampleInputPassword1" class="form-label">Product Image</label>
+                <label for="exampleInputPassword1" class="form-label">Upload Product Image</label>
                 <div class="row">
                     <div class="col-md-3 mb-3">
                         <input type="file" name="images[]" class="dropify" id="input-file"
@@ -111,7 +112,7 @@
                 <textarea class="summernote" name="imperfections">{{ old('imperfections') }}</textarea>
             </div>
             <div class="col-md-12">
-                <label for="exampleInputPassword1" class="form-label">Imperfection Product Image</label>
+                <label for="exampleInputPassword1" class="form-label"> Upload Imperfection Product Image</label>
                 <div class="row">
                     <div class="col-md-3 mb-3">
                         <input type="file" name="imperfectionimages[]" class="dropify" id="input-file"
@@ -130,16 +131,16 @@
                             data-allowed-file-extensions="jpg jpeg png gif" />
                     </div>
 
-                    </div>
                 </div>
             </div>
-            <input type="hidden" class="form-control" name="data_id" id="data_id" value=""
-                aria-describedby="emailHelp">
+    </div>
+    <input type="hidden" class="form-control" name="data_id" id="data_id" value=""
+        aria-describedby="emailHelp">
 
-            <button type="submit" class="btn btn-primary m-1  float-end" id="submit_btn">Submit</button>
-            <button type="reset" class="btn btn-secondary m-1 float-end">Reset</button>
+    <button type="submit" class="btn btn-primary m-1  float-end" id="submit_btn">Submit</button>
+    <button type="reset" class="btn btn-secondary m-1 float-end">Reset</button>
 
-        </form>
+    </form>
     </div>
 @endsection
 @section('script')

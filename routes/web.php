@@ -53,8 +53,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('trashed/product/restore/{id}',[ProductController::class,'restore']);
 
     //delete product image
-    Route::get('delete/product/{id}/image',[ProductController::class,'delete_product_image'])->name('admin.delete_product_image');
-    Route::get('delete/imperfectionimage/{id}/image',[ProductController::class,'imperfectionimage'])->name('admin.imperfectionimage');
+    Route::delete('delete/product/{id}/image',[ProductController::class,'delete_product_image'])->name('admin.delete_product_image');
+    Route::delete('delete/imperfectionimage/{id}/image',[ProductController::class,'imperfectionimage'])->name('admin.imperfectionimage');
 
 });
 

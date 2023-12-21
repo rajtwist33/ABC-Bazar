@@ -227,7 +227,7 @@ class ProductController extends Controller
     public function edit(Request $request, $id)
     {
         $page ="Product | Edit";
-        $title = 'Delete User!';
+        $title = 'Delete Image!';
         $text = "Are you sure you want to delete?";
         confirmDelete($title, $text);
         $categories = Category::get();
@@ -323,7 +323,7 @@ class ProductController extends Controller
         unlink($data->file_path);
         }
         $data->delete();
-
+        toast('Product Image Removed','success');
         return redirect()->back();
     }
     public function imperfectionimage($id){
@@ -332,7 +332,7 @@ class ProductController extends Controller
         unlink($data->file_path);
         }
         $data->delete();
-
+        toast('Imperfection Image Removed','success');
         return redirect()->back();
     }
 

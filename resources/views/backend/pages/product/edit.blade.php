@@ -115,9 +115,9 @@
                         <div class="col-md-3 mb-3">
                             <div class="card border border-light-subtle p-2" style="width: 13rem; min-height: 8rem;">
                                 <img src="{{ asset($productimage->file_path) }}" class="card-img-top"
-                                    alt="image Not Found" style="height:15rem; ">
+                                    alt="image Not Found" style="width:100%; height:15rem; ">
                                 <a href="{{ route('admin.imperfectionimage', $productimage->id) }}"
-                                    class="btn btn-primary btn-sm mt-1">Remove</a>
+                                    class="btn btn-primary btn-sm mt-1" data-confirm-delete="true">Remove</a>
                             </div>
                         </div>
                     @endforeach
@@ -144,7 +144,7 @@
     <input type="hidden" class="form-control" name="data_id" id="data_id" value="{{ $data_lists->id }}"
         aria-describedby="emailHelp">
 
-    <button type="submit" class="btn btn-primary m-1  float-end" id="submit_btn">Submit</button>
+    <button type="submit" class="btn btn-primary m-1  float-end" id="submit_btn">Update</button>
     <button type="reset" class="btn btn-secondary m-1 float-end">Reset</button>
 
     </form>
