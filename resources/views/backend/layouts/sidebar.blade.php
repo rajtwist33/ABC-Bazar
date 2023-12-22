@@ -2,7 +2,8 @@
     <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
             <a href="{{ url('/dashboard') }}" class="text-nowrap logo-img">
-                <img src="{{ asset('backend/assets/images/logos/dark-logo.svg') }}" width="180" alt="" />
+                <img src="{{ asset($setting->file_path) }}" class="img-fluid" width="100" alt="" />
+                {{-- <img src="{{ asset('backend/assets/images/logos/dark-logo.svg') }}" width="180" alt="" /> --}}
             </a>
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                 <i class="ti ti-x fs-8"></i>
@@ -36,7 +37,8 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ request()->is(['slider*']) ? 'active' : '' }}" href="{{ route('admin.slider.index') }}" aria-expanded="false">
+                    <a class="sidebar-link {{ request()->is(['slider*']) ? 'active' : '' }}"
+                        href="{{ route('admin.slider.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-alert-circle"></i>
                         </span>
@@ -44,7 +46,8 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ request()->is(['product*','trashed/product*']) ? 'active' : '' }}" href="{{route('admin.product.index')}}" aria-expanded="false">
+                    <a class="sidebar-link {{ request()->is(['product*', 'trashed/product*']) ? 'active' : '' }}"
+                        href="{{ route('admin.product.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-cards"></i>
                         </span>
@@ -52,7 +55,8 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ request()->is(['setting*','trashed/setting*']) ? 'active' : '' }}" href="{{route('admin.setting.index')}}" aria-expanded="false">
+                    <a class="sidebar-link {{ request()->is(['setting*', 'trashed/setting*']) ? 'active' : '' }}"
+                        href="{{ route('admin.setting.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-file-description"></i>
                         </span>

@@ -18,10 +18,11 @@
                         <div class="card mb-0">
                             <div class="card-body">
                                 <a href="./index.html" class="text-nowrap logo-img text-center d-block py-3 w-100">
-                                    <img src="{{ asset('backend/assets/images/logos/dark-logo.svg') }}" width="180"
-                                        alt="">
+                                    <img src="{{ asset($setting->file_path) }}" class="img-fluid" width="100" alt="" />
+                                    {{-- <img src="{{ asset('backend/assets/images/logos/dark-logo.svg') }}" width="180"
+                                        alt=""> --}}
                                 </a>
-                                <p class="text-center">Your Social Campaigns</p>
+
                                 <form action="{{ route('register') }}" method="POST">
                                     @csrf
                                     <div class="mb-3">
