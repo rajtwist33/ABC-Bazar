@@ -46,10 +46,12 @@ class SettingController extends Controller
 
     public function create()
     {
-        $count = Setting::withTrashed()->count();
-
+        $count = Setting::onlyTrashed()->count();
+        $data =Setting::count();
+        // dd($count);
         return response()->json([
             'count'=>$count,
+            'data'=>$data,
         ]);
     }
 

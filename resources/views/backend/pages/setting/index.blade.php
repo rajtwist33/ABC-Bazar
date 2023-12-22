@@ -73,12 +73,16 @@
                     url: "{{ route('admin.setting.create') }}",
                     success: function(response) {
                         var count = response.count;
+                        var data = response.data;
                         if(count > 0){
                             $('#category_btn').hide();
                             $('#trash_btn').show();
                         }else{
-                            $('#category_btn').show();
+                            $('#category_btn').hide();
                             $('#trash_btn').hide();
+                            if(data == 0){
+                            $('#category_btn').show();
+                        }
                         }
                     },
                     error: function(xhr, status, error) {
@@ -156,6 +160,7 @@
                         resetModal();
                         $('#staticBackdrop').modal('hide');
                         reloadTable();
+                        countdata();
                     },
                     error: function(xhr, status, error) {
                         var errorMessage = xhr.responseJSON && xhr.responseJSON.error ? xhr
@@ -196,6 +201,7 @@
                                     row.remove();
                                     toastr.success(response.success);
                                     reloadTable();
+                                    countdata();
                                 },
                                 error: function(xhr, status, error) {
                                     console.error(error);
