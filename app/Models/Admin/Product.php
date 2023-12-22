@@ -16,6 +16,7 @@ class Product extends Model
         'specification',
         'imperfections',
         'price',
+        'status',
         'slug',
         'slug_display',
         'created_by',

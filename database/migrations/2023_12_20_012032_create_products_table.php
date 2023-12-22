@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('specification')->nullable();
             $table->text('imperfections')->nullable();
             $table->text('price')->nullable();
+            $table->boolean('status')->default(0)->comment('0:not sold,1:sold');
             $table->text('slug')->nullable();
             $table->text('slug_display')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();

@@ -3,22 +3,19 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Str;
-use App\Models\Admin\Slider;
 use Illuminate\Http\Request;
-use App\Models\Admin\Category;
 use App\Http\Controllers\Controller;
+use App\Models\Admin\Setting;
 use Yajra\DataTables\Facades\Datatables;
 use Illuminate\Support\Facades\Validator;
-
-class SliderController extends Controller
+class SettingController extends Controller
 {
     public function index(Request $request)
     {
-        $page ="Slider";
-        $data = Slider::get();
+        $page ="Setting";
+        $data = Setting::get();
         if ($request->ajax()) {
-            $data = Slider::latest()->get();
-
+            $data = Setting::latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('image', function ($data) {
@@ -32,17 +29,16 @@ class SliderController extends Controller
                         return '<a href="' . $url . '" target="_blank"><img src="' . $url . '"  class="image-fluid" width=80%;/ alt="' . $title . '"> </a>';
                     }
                 })
-
                 ->addColumn('action', function($row){
                     $edit = '<button class="edit btn btn-primary btn-sm m-1 edit-btn" data-id="' . $row->id . '" title="Edit">Edit</button>';
                     $delete =
-                        '<button  title="delete"  data-id="' . $row->id . '"  class="btn btn-danger btn-sm m-1 delete-btn">Delete</button>';
+                        '<button  title="move trash"  data-id="' . $row->id . '"  class="btn btn-danger btn-sm m-1 delete-btn">Move Trash</button>';
                     return  $edit . " " . $delete;
                 })
                 ->rawColumns(['action','image'])
                 ->make(true);
         }
-        return view('backend.pages.slider.index',compact('page'));
+        return view('backend.pages.setting.index',compact('page'));
     }
 
 
@@ -50,7 +46,11 @@ class SliderController extends Controller
 
     public function create()
     {
+        $count = Setting::withTrashed()->count();
 
+        return response()->json([
+            'count'=>$count,
+        ]);
     }
 
     /**
@@ -62,8 +62,6 @@ class SliderController extends Controller
             $rules = [
                 'title' => 'required|unique:categories,title',
             ];
-
-
 
         if(!$request->data_id)
             {
@@ -84,11 +82,11 @@ class SliderController extends Controller
             $image_name = md5(rand(1000, 10000));
             $ext = strtolower($file->getClientOriginalExtension());
             $image_full_name = $image_name . '.' . $ext;
-            $uploade_path = 'uploads/slider/images/';
+            $uploade_path = 'uploads/category/images/';
             $image_url = $uploade_path . $image_full_name;
             $file->move($uploade_path, $image_full_name);
 
-           Slider::UpdateOrcreate(
+           Setting::UpdateOrcreate(
                 [
                     'id' => $request->data_id,
                 ],
@@ -101,7 +99,7 @@ class SliderController extends Controller
             );
         }
         else{
-           Slider::UpdateOrcreate(
+            Setting::UpdateOrcreate(
                 [
                     'id' => $request->data_id,
                 ],
@@ -112,9 +110,9 @@ class SliderController extends Controller
         }
 
         if ($request->data_id != '') {
-            return response()->json(['success'=> 'Slider Updated.']);
+            return response()->json(['success'=> 'Setting Updated.']);
         } else {
-            return response()->json(['success'=> 'Slider Added.']);
+            return response()->json(['success'=> 'Setting Added.']);
         }
     }
 
@@ -131,7 +129,7 @@ class SliderController extends Controller
      */
     public function edit(Request $request, $id)
     {
-       $data_list = Slider::find($id);
+       $data_list = Setting::find($id);
        return response()->json(['data_list' => $data_list]);
     }
 
@@ -148,7 +146,7 @@ class SliderController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $record = Category::find($id);
+        $record = Setting::find($id);
         if (!$record) {
             return response()->json(['success' => 'Record not found.'], 404);
         }
@@ -158,10 +156,10 @@ class SliderController extends Controller
     }
     public function trashed(Request $request)
     {
-        $page ="Category";
-        $data = Category::get();
+        $page ="Setting";
+        $data = Setting::get();
         if ($request->ajax()) {
-            $data = Category::onlyTrashed()->latest()->get();
+            $data = Setting::onlyTrashed()->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('image', function ($data) {
@@ -175,26 +173,21 @@ class SliderController extends Controller
                         return '<a href="' . $url . '" target="_blank"><img src="' . $url . '"  class="image-fluid" width=80%;/ alt="' . $title . '"> </a>';
                     }
                 })
-                ->addColumn('description', function($data){
-                    $description = Str::limit(strip_tags($data->description), 100);;
-                    return $description;
 
-                })
                 ->addColumn('action', function($row){
                     $edit = '<button class="edit btn btn-primary btn-sm m-1 edit-btn" data-id="' . $row->id . '" title="restore">Restore</button>';
                     $delete =
                         '<button  title="Delete"  data-id="' . $row->id . '"  class="btn btn-danger btn-sm m-1 delete-btn"> Permanent Delete</button>';
                     return  $edit . " " . $delete;
                 })
-                ->rawColumns(['action','image','description'])
+                ->rawColumns(['action','image'])
                 ->make(true);
         }
-        return view('backend.pages.category.trashed.index',compact('page'));
+        return view('backend.pages.setting.trashed.index',compact('page'));
     }
 
     public function forceDelete($id){
-        $data  = Slider::where('id', $id)->delete();
-
+        $data  = Setting::where('id', $id)->withTrashed()->forceDelete();
         if (!$data) {
             return response()->json(['success' => 'Record not found.'], 404);
         }
@@ -202,8 +195,12 @@ class SliderController extends Controller
     }
 
     public function restore($id){
-        $data  = Category::where('id', $id)->withTrashed()->restore();
+        $data  = Setting::where('id', $id)->withTrashed()->restore();
         return response()->json(['success' => 'Record Restore successfully.']);
     }
 
+    public function category_list(){
+        $categories = Setting::whereNull('deleted_at')->get()->toArray();
+        return response()->json(['categories'=> $categories]);
+    }
 }

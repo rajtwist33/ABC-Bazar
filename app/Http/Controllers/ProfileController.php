@@ -2,39 +2,69 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
+use App\Models\User;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
+
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        $page = "Profile";
+        return view('backend.pages.profile.create',compact('page'));
     }
 
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request)
     {
-        $request->user()->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $auth = Auth::user()->id;
+        if ($request->hasFile('image')) {
+            $this->validate($request, [
+                'image'=>'nullable|image|mimes:jpg,jpeg,png|max:1999',
+            ]);
+
+            $file = $request->file('image');
+            $image_name = md5(rand(1000, 10000));
+            $ext = strtolower($file->getClientOriginalExtension());
+            $image_full_name = $image_name . '.' . $ext;
+            $uploade_path = 'uploads/profile/';
+            $image_url = $uploade_path . $image_full_name;
+            $file->move($uploade_path, $image_full_name);
+
+           User::UpdateOrcreate(
+                [
+                    'id' => $auth,
+                ],
+                [
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'image'=> $image_full_name,
+                    'file_path'=> $image_url,
+
+                ]
+            );
         }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        else{
+           User::UpdateOrcreate(
+                [
+                    'id' => $auth,
+                ],
+                [
+                    'name' => $request->name,
+                    'email' => $request->email,
+                ]
+            );
+        }
+             Alert::success('Success Title', 'Profile Updated Successfully!');
+            return redirect()->route('dashboard.index');
     }
 
     /**

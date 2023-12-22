@@ -44,7 +44,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ request()->is(['product*']) ? 'active' : '' }}" href="{{route('admin.product.index')}}" aria-expanded="false">
+                    <a class="sidebar-link {{ request()->is(['product*','trashed/product*']) ? 'active' : '' }}" href="{{route('admin.product.index')}}" aria-expanded="false">
                         <span>
                             <i class="ti ti-cards"></i>
                         </span>
@@ -52,11 +52,11 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="./ui-forms.html" aria-expanded="false">
+                    <a class="sidebar-link {{ request()->is(['setting*','trashed/setting*']) ? 'active' : '' }}" href="{{route('admin.setting.index')}}" aria-expanded="false">
                         <span>
                             <i class="ti ti-file-description"></i>
                         </span>
-                        <span class="hide-menu">Forms</span>
+                        <span class="hide-menu">Setting</span>
                     </a>
                 </li>
                 <li class="sidebar-item">

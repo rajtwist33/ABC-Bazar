@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -38,6 +37,10 @@
     <script src="{{ asset('backend/assets/js/sidebarmenu.js') }}"></script>
     <script src="{{ asset('backend/assets/js/app.min.js') }}"></script>
     <script src="{{ asset('backend/assets/libs/simplebar/dist/simplebar.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script>
+          feather.replace();
+    </script>
     @yield('script')
 </body>
 

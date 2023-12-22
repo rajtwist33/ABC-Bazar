@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropify/dist/css/dropify.min.css">
     <link href="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/min/dropzone.min.css" rel="stylesheet">
-    
+
 @endsection
 @section('main')
     <div class="container">
@@ -15,7 +15,7 @@
             @csrf
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label for="title" class="form-label fs-4"> Product ID : <strong id="product_id" class="text-danger">
+                    <label for="title" class="form-label fs-4"> Product ID <code>*</code>: <strong id="product_id" class="text-danger">
                             {{ old('product_code') }}</strong></label><br>
                     @error('product_code')
                         <div class="alert alert-danger mt-1">{{ $message }}</div>
@@ -24,7 +24,7 @@
                         aria-describedby="emailHelp" value="{{ old('product_code') }}">
                 </div>
                 <div class="col-md-12 mb-3">
-                    <label for="title" class="form-label">Select Category</label>
+                    <label for="title" class="form-label">Select Category</label> <code>*</code>
                     <select class="form-select" name="select_category" id="select_category"
                         aria-label="Default select example">
                         <option value="">Select Category</option>
@@ -39,7 +39,7 @@
                     @enderror
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="title" class="form-label">Model</label><br>
+                    <label for="title" class="form-label">Model</label><code>*</code><br>
                     <input type="text" class="form-control" name="title" id="title" aria-describedby="emailHelp"
                         value="{{ old('title') }}">
                     @error('title')
@@ -47,7 +47,7 @@
                     @enderror
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="price" class="form-label">Price</label><br>
+                    <label for="price" class="form-label">Price</label><code>*</code><br>
                     <input type="text" class="form-control" name="price" id="price" aria-describedby="emailHelp"
                         value="{{ old('price') }}">
                     @error('price')
@@ -56,14 +56,14 @@
                 </div>
             </div>
             <div class="mb-3">
-                <label for="description" class="form-label">Description</label><br>
+                <label for="description" class="form-label">Description</label><code>*</code><br>
                 <textarea class="summernote" name="description">{{ old('description') }}</textarea>
                 @error('description')
                     <div class="alert alert-danger mt-1">{{ $message }}</div>
                 @enderror
             </div>
             <div class="mb-3">
-                <label for="description" class="form-label">Specification</label><br>
+                <label for="description" class="form-label">Specification</label><code>*</code><br>
                 <textarea class="summernote" name="specification">{{ old('specification') }}</textarea>
                 @error('specification')
                     <div class="alert alert-danger mt-1">{{ $message }}</div>
@@ -71,7 +71,7 @@
             </div>
 
             <div class="col-md-12">
-                <label for="exampleInputPassword1" class="form-label">Upload Product Image</label>
+                <label for="exampleInputPassword1" class="form-label">Upload Product Image</label><code>*</code>
                 <div class="row">
                     <div class="col-md-3 mb-3">
                         <input type="file" name="images[]" class="dropify" id="input-file"
