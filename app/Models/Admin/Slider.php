@@ -2,8 +2,9 @@
 
 namespace App\Models\Admin;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Slider extends Model
 {
@@ -13,4 +14,7 @@ class Slider extends Model
         'image',
         'file_path',
     ];
+    public static function hasslider(Request $request){
+        return Slider::get();
+    }
 }

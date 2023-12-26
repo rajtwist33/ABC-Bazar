@@ -2,8 +2,12 @@
 
 namespace App\Providers;
 
-use Illuminate\Http\Request;
+use App\Models\Admin\Category;
+use App\Models\Admin\Product;
 use App\Models\Admin\Setting;
+use App\Models\Admin\Slider;
+use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,14 +17,23 @@ class AppServiceProvider extends ServiceProvider
     {
 
     }
-
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(Request $request): void
     {
-        view()->composer(['backend.layouts.sidebar','auth.login','auth.register'], function ($view) use ($request) {
+        Paginator::useBootstrap();
+        view()->composer(['backend.layouts.sidebar','backend.layouts.main','auth.login','auth.register','frontend.layouts.main','frontend.section.logo'], function ($view) use ($request) {
             $view->with('setting', Setting::hassetting($request));
+        });
+
+        view()->composer(['frontend.section.product'], function ($view) use ($request) {
+            $view->with('products', Product::hasproduct($request));
+        });
+
+        view()->composer(['frontend.section.header'], function ($view) use ($request) {
+            $view->with('categories', Category::hascategory($request));
+        });
+
+        view()->composer(['frontend.section.banner'], function ($view) use ($request) {
+            $view->with('sliders', Slider::hasslider($request));
         });
     }
 }

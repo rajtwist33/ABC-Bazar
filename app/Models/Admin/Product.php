@@ -2,9 +2,11 @@
 
 namespace App\Models\Admin;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class Product extends Model
 {
     use HasFactory, SoftDeletes;
@@ -31,5 +33,11 @@ class Product extends Model
     }
     public function hasimperfection_image(){
         return $this->hasMany(ProductImperfectionImage::class,'product_id','id');
+    }
+    public static function hasproduct(Request $request){
+        return Product::with('hasproduct_image','hasimperfection_image','hascategory')
+        ->where('status',0)
+        ->latest()
+        ->paginate(9);
     }
 }

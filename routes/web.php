@@ -10,25 +10,6 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SettingController;
 
-//Clear Cache
-Route::get('/clear', function () {
-    Artisan::call('optimize:clear');
-    Artisan::call('config:clear');
-    Artisan::call('route:clear');
-    Artisan::call('view:clear');
-    Artisan::call('cache:clear');
-    return redirect('/');
-    });
-
-Route::get('/', function () {
-    return view('auth.login');
-})->name('home');
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
 
 
 Route::middleware(['auth'])->group(function () {
@@ -75,3 +56,4 @@ Route::post('password/update', [PasswordController::class,'updatePassword'])->na
 });
 
 require __DIR__.'/auth.php';
+require __DIR__.'/frontend.php';

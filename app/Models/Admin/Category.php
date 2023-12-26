@@ -2,9 +2,11 @@
 
 namespace App\Models\Admin;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class Category extends Model
 {
     use HasFactory, SoftDeletes;
@@ -15,4 +17,7 @@ class Category extends Model
         'file_path',
         'deleted_at',
     ];
+    public static function hascategory(Request $request){
+        return Category::get();
+    }
 }
