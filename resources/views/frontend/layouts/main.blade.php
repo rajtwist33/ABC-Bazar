@@ -26,6 +26,7 @@
     <link rel="stylesoeet" href="{{ asset('frontend/css/owl.theme.default.min.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
         media="screen">
+        @yield('style')
 </head>
 <body>
     <div class="banner_bg_main">
@@ -53,6 +54,7 @@
             document.getElementById("mySidenav").style.width = "0";
         }
     </script>
+    @yield('script')
 </body>
 
 </html>

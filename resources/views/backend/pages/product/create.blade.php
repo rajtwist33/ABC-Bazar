@@ -155,7 +155,7 @@
         $(document).ready(function() {
             //Summernote
             $('.summernote').summernote({
-                height: 100,
+                height: 300,
                 toolbar: [
                     ['style', ['bold', 'italic', 'underline', 'strikethrough']],
                     ['font', ['fontsize', 'color']],

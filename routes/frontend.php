@@ -1,7 +1,10 @@
 <?php
+
+use App\Http\Controllers\Frontend\ProductdetailController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
-use App\Http\Controllers\Freontend\SearchController;
+use App\Http\Controllers\Frontend\SearchController;
+
 
 //Clear Cache
 Route::get('/clear', function () {
@@ -25,4 +28,5 @@ Route::get('/register', function () {
 })->name('register');
 
 Route::resource('search',SearchController::class);
+Route::resource('product-detail',ProductdetailController::class);
 

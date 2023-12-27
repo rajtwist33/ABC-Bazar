@@ -553,7 +553,7 @@ a:hover {
 .fashion_section {
     width: 100%;
     float: left;
-    padding-bottom: 150px;
+    /* padding-bottom: 150px; */
 }
 
 .fashion_taital {

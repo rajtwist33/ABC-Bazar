@@ -9,19 +9,23 @@
                             @foreach ($products as $product)
                                 <div class="col-lg-4 col-sm-4">
                                     <div class="box_main">
-                                        <strong for="" class="text-dark">Product Id : </strong><strong class="ml-1 btn btn-sm btn-outline-success"> {{ $product->product_code }}</strong>
+                                        <strong for="" class="text-dark">Product Id : </strong><strong
+                                            class="ml-1 text-success">
+                                            {{ $product->product_code }}</strong>
                                         <h5 class="shirt_text">{{ $product->title }}</h5>
                                         <p class="price_text"> Price <span style="color: #262626;">RS.
                                                 {{ $product->price }}</span>
                                         </p>
                                         <div class="electronic_img">
-                                            <a href="{{ $product->hasproduct_image[0]->file_path }}" target="blank">
+                                            <a href="{{ asset($product->hasproduct_image[0]->file_path) }}" target="blank">
                                                 <img src="{{ asset($product->hasproduct_image[0]->file_path) }}"
                                                     style="height:20rem;"></a>
                                         </div>
                                         <div class="btn_main">
                                             <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                            <div class="seemore_bt"><a href="#">See More</a></div>
+                                            <div class="seemore_bt"><a
+                                                    href="{{ route('product-detail.show', $product->product_code) }}">See
+                                                    More</a></div>
                                         </div>
                                     </div>
                                 </div>

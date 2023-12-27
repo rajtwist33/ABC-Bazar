@@ -106,7 +106,7 @@
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Imperfections</label>
-                <textarea class="summernote" name="imperfections">{{ old('imperfections') }}</textarea>
+                <textarea class="summernote" name="imperfections">{{ $data_lists->imperfections != '' ? $data_lists->imperfections : old('imperfections') }}</textarea>
             </div>
             <div class="col-md-12">
                 <label for="exampleInputPassword1" class="form-label">Imperfection Product Image</label>
@@ -162,7 +162,7 @@
         $(document).ready(function() {
             //Summernote
             $('.summernote').summernote({
-                height: 100,
+                height: 300,
                 toolbar: [
                     ['style', ['bold', 'italic', 'underline', 'strikethrough']],
                     ['font', ['fontsize', 'color']],
