@@ -9,19 +9,23 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="buy_product_form" >
+            <form id="buy_product_form">
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col">
+                        <div class="col-md-4">
                             <label for="" class="fs-1"><strong
-                                    class="mr-2">{{ $products->hascategory->title }}
-                                    Code:</strong>{{ $products->product_code }}</label>
-                            <label for="" class="ml-5 fs-1"><strong
-                                    class="mr-2">{{ $products->hascategory->title }} Model:
-                                </strong>{{ $products->title }}</label>
-                            <label for="" class="ml-5 fs-1"><strong
-                                    class="mr-2">{{ $products->hascategory->title }} Price: </strong> Rs.
-                                {{ $products->price }}</label>
+                            class="mr-2">{{ $products->hascategory->title }}
+                            Code:</strong>{{ $products->product_code }}</label>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="" class=" fs-1"><strong
+                            class="mr-2">{{ $products->hascategory->title }} Model:
+                           </strong>{{ $products->title }}</label>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="" class=" fs-1"><strong
+                            class="mr-2">{{ $products->hascategory->title }} Price: </strong> Rs.
+                           {{ $products->price }}</label>
                         </div>
                     </div>
 

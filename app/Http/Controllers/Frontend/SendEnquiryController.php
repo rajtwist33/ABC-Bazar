@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
-use App\Models\Admin\Enquiry;
+use App\Mail\NotifyMail;
+use App\Mail\NotifyMailToOwner;
 use Illuminate\Http\Request;
+use App\Models\Admin\Enquiry;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 
 class SendEnquiryController extends Controller
 {
@@ -62,9 +65,13 @@ class SendEnquiryController extends Controller
                 'message'=>$request->client_message,
         ]);
 
+        Mail::to($client_email)->send(new NotifyMail());
+        Mail::to('developerraj27@gmail.com')->send(new NotifyMailToOwner);
+
         return response()->json([
             'success'=>'Your Post has Submitted. We will contact you Soon.'
        ]);
+
       }else{
         return response()->json([
             'error'=>'You have already Submitted for this Post.'
