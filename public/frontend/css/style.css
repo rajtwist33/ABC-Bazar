@@ -582,7 +582,7 @@ a:hover {
     width: 100%;
     font-size: 20px;
     color: #30302e;
-    text-align: center;
+    /* text-align: center; */
     font-weight: bold;
     padding-bottom: 5px;
 }
@@ -591,7 +591,7 @@ a:hover {
     width: 100%;
     font-size: 16px;
     color: #f26522;
-    text-align: center;
+    /* text-align: center; */
     margin: 0px;
 }
 
@@ -604,15 +604,22 @@ a:hover {
 
 .btn_main {
     width: 100%;
+    margin-top: 0.5rem;
     display: flex;
 }
 
 .buy_bt {
     float: left;
     width: 100%;
+
+}
+.buy_bt1 {
+    text-align: right;
+    width: 100%;
+    color: #f26522;
 }
 
-.buy_bt a {
+.buy_bt1 a {
     width: 100%;
     font-size: 16px;
     color: #f26522;
@@ -682,7 +689,7 @@ a:hover {
 .electronic_img {
     width: 100%;
     text-align: center;
-    margin: 50px 0px;
+    margin: 13px 2px;
     min-height: 293px;
 }
 

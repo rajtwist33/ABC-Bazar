@@ -24,6 +24,15 @@ class SearchController extends Controller
     public function store(Request $request)
     {
 
+        $searchTerm = '%' . $request->product_name . '%';
+        $products = Product::with('hasproduct_image','hasimperfection_image','hascategory')
+        ->where('title', 'like', $searchTerm)
+        ->where('status', 0)
+        ->latest()
+        ->paginate(9);
+
+
+        return view('frontend.pages.search_products',compact('products'));
     }
 
 

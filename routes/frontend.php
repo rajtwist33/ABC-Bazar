@@ -4,7 +4,7 @@ use App\Http\Controllers\Frontend\ProductdetailController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Frontend\SearchController;
-
+use App\Http\Controllers\Frontend\SendEnquiryController;
 
 //Clear Cache
 Route::get('/clear', function () {
@@ -29,4 +29,5 @@ Route::get('/register', function () {
 
 Route::resource('search',SearchController::class);
 Route::resource('product-detail',ProductdetailController::class);
+Route::resource('send-enquiry',SendEnquiryController::class);
 

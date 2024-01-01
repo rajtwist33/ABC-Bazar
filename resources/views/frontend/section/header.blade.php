@@ -17,20 +17,25 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     @foreach ($categories as $category)
-                        <a href="{{ route('search.show', $category->id ) }}" class="dropdown-item">{{ $category->title }}</a>
+                        <a href="{{ route('search.show', $category->id) }}"
+                            class="dropdown-item">{{ $category->title }}</a>
                     @endforeach
                 </div>
             </div>
             <div class="main">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search this by name ... ">
-                    <div class="input-group-append">
-                        <button class="btn btn-secondary" type="button"
-                            style="background-color: #f26522; border-color:#f26522 ">
-                            <i class="fa fa-search"></i>
-                        </button>
+                <form action="{{ route('search.store') }}" method="post">
+                    @csrf
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="product_name"
+                            placeholder="Search Product name ... ">
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary" type="submit"
+                                style="background-color: #f26522; border-color:#f26522 ">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
