@@ -10,7 +10,7 @@
 @section('main')
     <div class="container">
         <a href="{{ route('admin.product.create') }}" class="float-right btn btn-success mb-2"> Add Product</a>
-        <a href="{{ route('admin.product.trashed') }}" class="float-right btn btn-danger mb-2">Trash</a>
+      @role('admin')  <a href="{{ route('admin.product.trashed') }}" class="float-right btn btn-danger mb-2">Trash</a>@endrole
         <table class="table data-table table-responsive">
             <thead class="thead-dark">
                 <tr>
@@ -19,14 +19,15 @@
                     <th>Category</th>
                     <th>Model</th>
                     <th>Price</th>
+                    <th>Date</th>
                     <th width="105px">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-    </div>
-@endsection
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    @endsection
 @section('script')
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap4.min.js"></script>
@@ -65,6 +66,11 @@
                         "className": "text-center",
                         data: 'price',
                         name: 'price',
+                    },
+                    {
+                        "className": "text-center",
+                        data: 'date',
+                        name: 'date',
                     },
 
                     {

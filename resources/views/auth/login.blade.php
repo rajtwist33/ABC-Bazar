@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name') }}</title>
-    <link rel="shortcut icon" type="image/png" href="{{ asset($setting->file_path) }}" />
+    <link rel="icon" href="{{ $setting != '' ? asset($setting->file_path) : '' }}" type="image/gif" />
     <link rel="stylesheet" href="{{ asset('backend/assets/css/styles.min.css') }}" />
 </head>
 
@@ -21,7 +21,7 @@
                             <div class="card-body">
                                 <a href="{{ url('/') }}"
                                     class="text-nowrap logo-img text-center d-block py-3 w-100">
-                                    <img src="{{ asset($setting->file_path) }}" class="img-fluid" width="100"
+                                    <img src=" {{ $setting != '' ? asset($setting->file_path) : '' }}" class="img-fluid" width="100"
                                         alt="" />
                                     {{-- <img src="{{ asset('backend/assets/images/logos/dark-logo.svg') }}" width="180"
                                         alt=""> --}}
@@ -63,7 +63,7 @@
                                     <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Sign
                                         In</button>
                                     <div class="d-flex align-items-center justify-content-center">
-                                        <p class="fs-4 mb-0 fw-bold">New to {{ $setting->title }}</p>
+                                        <p class="fs-4 mb-0 fw-bold">New to {{$setting !='' ?  $setting->title : ''}}</p>
                                         <a class="text-primary fw-bold ms-2" href="{{ route('register') }}">Create an
                                             account</a>
                                     </div>

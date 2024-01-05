@@ -15,12 +15,14 @@
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All Category
                 </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    @foreach ($categories as $category)
-                        <a href="{{ route('search.show', $category->id) }}"
-                            class="dropdown-item">{{ $category->title }}</a>
-                    @endforeach
-                </div>
+                @if ($categories)
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        @foreach ($categories as $category)
+                            <a href="{{ route('search.show', $category->id) }}"
+                                class="dropdown-item">{{ $category->title }}</a>
+                        @endforeach
+                    </div>
+                @endif
             </div>
             <div class="main">
                 <form action="{{ route('search.store') }}" method="post">

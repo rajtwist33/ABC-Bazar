@@ -2,7 +2,7 @@
     <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
             <a href="{{ url('/dashboard') }}" class="text-nowrap logo-img">
-                <img src="{{ asset($setting->file_path) }}" class="img-fluid" width="100" alt="" />
+                <img src="{{ $setting != '' ? asset($setting->file_path) : '' }}" class="img-fluid" width="100" alt="" />
                 {{-- <img src="{{ asset('backend/assets/images/logos/dark-logo.svg') }}" width="180" alt="" /> --}}
             </a>
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
@@ -11,6 +11,7 @@
         </div>
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
             <ul id="sidebarnav">
+               <h3 class="ml-5"> {{ Auth::user()->roles->first()->name }}</h3>
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                     <span class="hide-menu">Home</span>
@@ -27,6 +28,7 @@
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                     <span class="hide-menu">UI COMPONENTS</span>
                 </li>
+                @role('admin')
                 <li class="sidebar-item">
                     <a class="sidebar-link {{ request()->is(['category*', 'trashed/category*']) ? 'active' : '' }}"
                         href="{{ route('admin.category.index') }}" aria-expanded="false">
@@ -63,14 +65,18 @@
                         <span class="hide-menu">Setting</span>
                     </a>
                 </li>
+                @endrole
+                @role('seller')
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="./ui-typography.html" aria-expanded="false">
+                    <a class="sidebar-link {{ request()->is(['product*', 'trashed/product*']) ? 'active' : '' }}"
+                        href="{{ route('admin.product.index') }}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-typography"></i>
+                            <i class="ti ti-cards"></i>
                         </span>
-                        <span class="hide-menu">Typography</span>
+                        <span class="hide-menu">Product</span>
                     </a>
                 </li>
+                @endrole
             </ul>
         </nav>
     </div>

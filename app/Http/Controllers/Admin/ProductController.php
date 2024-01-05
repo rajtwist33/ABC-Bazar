@@ -19,10 +19,10 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $page ="Product";
-        $data = Product::with('hascategory')->get();
+        $data = Product::with('hascategory')->where('created_by',Auth::user()->id)->get();
 
         if ($request->ajax()) {
-            $data = Product::latest()->get();
+            $data = Product::latest()->where('created_by',Auth::user()->id)->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('product_code', function($data){
@@ -57,13 +57,16 @@ class ProductController extends Controller
                     }
                     return $price;
                 })
+                ->addColumn('date',function($data){
+                    $date = "<span class='text-primary'> ". $data->created_at->format('Y-M-d') . ' </br>' . $data->created_at->format('H:i:A'). "</span>";
+                    return $date;
+                })
                 ->addColumn('action', function($row){
                     $edit = '<a href="' . route('admin.product.edit', $row->slug) . '" class="edit btn btn-primary btn-sm m-1" title="Edit">Edit</i></a>';
-                    $delete = '<button  title="move trash"  data-id="' . $row->id . '"  class="btn btn-danger btn-sm m-1 delete-btn">Move Trash</button>';
-
-                        return  $edit . " " . $delete;
+                    $delete = '<button  title="move trash"  data-id="' . $row->id . '"  class="btn btn-danger btn-sm m-1 delete-btn"> Move Trash</button>';
+                    return  $edit . " " . $delete;
                 })
-                ->rawColumns(['product_code','category','model','price','action'])
+                ->rawColumns(['product_code','category','model','price','date','action'])
                 ->make(true);
         }
         return view('backend.pages.product.index',compact('page'));
@@ -94,8 +97,8 @@ class ProductController extends Controller
                 $request->validate([
                     'product_code'=>'required',
                     'select_category'=>'required',
+                    'price'=>'required',
                     'title' => 'required|unique:products,title',
-                    'price' => 'required',
                     'description' =>'required',
                     'specification' =>'required',
                 ]);
@@ -257,7 +260,7 @@ class ProductController extends Controller
         $page ="Product";
         $data = Product::get();
         if ($request->ajax()) {
-            $data = Product::onlyTrashed()->latest()->get();
+            $data = Product::onlyTrashed()->where('created_by',Auth::user()->id)->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('product_code', function($data){
@@ -292,13 +295,17 @@ class ProductController extends Controller
                     }
                     return $price;
                 })
+                ->addColumn('date',function($data){
+                    $date = "<span class='text-primary'> ". $data->deleted_at->format('Y-M-d') . ' </br>' . $data->deleted_at->format('H:i:A'). "</span>";
+                    return $date;
+                })
                 ->addColumn('action', function($row){
 
                     $edit = '<button class="edit btn btn-primary btn-sm m-1 edit-btn" data-id="' . $row->id . '" title="restore">Restore</button>';
                     $delete ='<button  title="Delete"  data-id="' . $row->id . '"  class="btn btn-danger btn-sm m-1 delete-btn"> Permanent Delete</button>';
                     return  $edit . " " . $delete;
                 })
-                ->rawColumns(['product_code','category','model','price','action'])
+                ->rawColumns(['product_code','category','model','price','date','action'])
                 ->make(true);
         }
         return view('backend.pages.product.trashed.index',compact('page'));

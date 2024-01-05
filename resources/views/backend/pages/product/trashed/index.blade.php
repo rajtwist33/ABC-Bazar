@@ -17,6 +17,7 @@
                     <th>Category</th>
                     <th>Model</th>
                     <th>Price</th>
+                    <th>Trashed Date</th>
                     <th width="105px">Action</th>
                 </tr>
             </thead>
@@ -63,6 +64,11 @@
                         "className": "text-center",
                         data: 'price',
                         name: 'price',
+                    },
+                    {
+                        "className": "text-center",
+                        data: 'date',
+                        name: 'date',
                     },
 
                     {

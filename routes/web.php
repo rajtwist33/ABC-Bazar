@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\DashboardController;
@@ -53,7 +52,11 @@ Route::middleware(['auth'])->group(function () {
 //Password Controller
 Route::get('password/change', [PasswordController::class,'showChangePasswordForm'])->name('admin.password.change');
 Route::post('password/update', [PasswordController::class,'updatePassword'])->name('admin.password.update');
+
+require __DIR__.'/seller.php';
+
 });
 
 require __DIR__.'/auth.php';
 require __DIR__.'/frontend.php';
+

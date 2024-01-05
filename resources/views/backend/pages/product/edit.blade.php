@@ -8,7 +8,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/min/dropzone.min.css" rel="stylesheet">
 @endsection
 @section('main')
-
     <div class="container">
         <a href="{{ route('admin.product.index') }}" class="float-right btn btn-success mb-2">Back</a>
         <button class="float-right btn btn-primary mb-2" id="reload">Reload</button>
@@ -48,14 +47,16 @@
                         <div class="alert alert-danger mt-1">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label for="price" class="form-label">Price</label><br>
-                    <input type="text" class="form-control" name="price" id="price" aria-describedby="emailHelp"
-                        value="{{ $data_lists->price != '' ? $data_lists->price : old('price') }}">
-                    @error('price')
-                        <div class="alert alert-danger mt-1">{{ $message }}</div>
-                    @enderror
-                </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="price" class="form-label">Price</label><br>
+                        <input type="text" class="form-control" name="price" id="price" aria-describedby="emailHelp"
+                            value="{{ $data_lists->price != '' ? $data_lists->price : old('price') }}">
+                        @error('price')
+                            <div class="alert alert-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+              
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Description</label><br>

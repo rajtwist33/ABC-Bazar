@@ -15,17 +15,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-      $role = Role::create([
-        'name'=>'admin',
-       ]);
+        $roles = [
+            ['name' => 'admin', 'guard_name'=>'web','created_at'=>now(), 'updated_at'=>now()],
+            ['name' => 'seller', 'guard_name'=>'web','created_at'=>now(), 'updated_at'=>now()],
+        ];
+
+         Role::insert($roles);
 
        $user = User::create([
             'name'=>'Admin',
+            'phone'=>'9800000000',
             'email'=>'admin@gmail.com',
             'password'=>Hash::make('password'),
             'email_verified_at'=>now(),
+            'active'=>1
        ]);
-       $user->assignRole($role);
-
+       $user->assignRole('admin');
     }
 }

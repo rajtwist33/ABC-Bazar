@@ -46,7 +46,8 @@
                         <div class="alert alert-danger mt-1">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-6 mb-3">
+
+              <div class="col-md-6 mb-3">
                     <label for="price" class="form-label">Price</label><code>*</code><br>
                     <input type="text" class="form-control" name="price" id="price" aria-describedby="emailHelp"
                         value="{{ old('price') }}">

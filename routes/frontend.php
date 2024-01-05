@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Frontend\ProductdetailController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Frontend\ProductdetailController;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Frontend\SearchController;
 use App\Http\Controllers\Frontend\SendEnquiryController;
