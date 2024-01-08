@@ -19,6 +19,7 @@ class Product extends Model
         'imperfections',
         'price',
         'status',
+        'approved_status',
         'slug',
         'slug_display',
         'created_by',

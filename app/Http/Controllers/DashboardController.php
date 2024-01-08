@@ -12,7 +12,7 @@ class DashboardController extends Controller
     public function index()
     {
         $page = "Dashboard";
-        return view('backend.layouts.main',compact('page'));
+        return view('backend.dashboard',compact('page'));
     }
 
     /**

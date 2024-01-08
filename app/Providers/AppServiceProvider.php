@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(Request $request): void
     {
         Paginator::useBootstrap();
-        view()->composer(['backend.layouts.sidebar','backend.layouts.main','auth.login','auth.register','frontend.layouts.main','frontend.section.logo'], function ($view) use ($request) {
+        view()->composer(['otp.verify_otp','backend.layouts.sidebar','backend.layouts.main','auth.login','auth.register','frontend.layouts.main','frontend.section.logo'], function ($view) use ($request) {
             $view->with('setting', Setting::hassetting($request));
         });
 

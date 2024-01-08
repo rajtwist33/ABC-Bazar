@@ -25,7 +25,7 @@
             <div class="container-fluid">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title fw-semibold mb-4">{{ $page }}</h5>
+                     @role('admin')   <h5 class="card-title fw-semibold mb-4">{{ $page }}</h5> @endrole
                         @yield('main')
                     </div>
                 </div>
