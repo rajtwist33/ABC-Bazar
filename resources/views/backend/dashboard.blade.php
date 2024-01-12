@@ -15,7 +15,7 @@
                 <div class="card text-center" style="width: 18rem;">
                     <div class="card-body">
                         <h5 class="card-title">Add Product</h5>
-                        <a href="{{ route('admin.product.create') }}" class="btn btn-primary">Click Here</a>
+                        <a href="{{ route('seller.product.create') }}" class="btn btn-primary">Click Here</a>
                     </div>
                 </div>
             </div>
@@ -23,7 +23,7 @@
                 <div class="card text-center" style="width: 18rem;">
                     <div class="card-body">
                         <h5 class="card-title">Product List</h5>
-                        <a href="{{ route('admin.product.index') }}" class="btn btn-primary">Click Here</a>
+                        <a href="{{ route('seller.product.index') }}" class="btn btn-primary">Click Here</a>
                     </div>
                 </div>
             </div>

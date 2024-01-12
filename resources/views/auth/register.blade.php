@@ -40,10 +40,11 @@
                                         @enderror
                                     </div>
                                     <div class="mb-3">
-                                        <label for="exampleInputtext1" class="form-label">Phone <code>*</code></label>
+                                        <label for="phone" class="form-label">Phone
+                                            <code>*</code></label>
                                         <input type="text" name="phone" value="{{ old('phone') }}"
                                             class="form-control  @error('phone') is-invalid @enderror"
-                                            id="exampleInputtext1" aria-describedby="textHelp">
+                                            id="exampleInputtext1" aria-describedby="textHelp" >
                                         @error('phone')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -87,11 +88,10 @@
                                     </div>
                                     <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Sign
                                         Up</button>
-                                    <div class="d-flex align-items-center justify-content-center">
-                                        <p class="fs-4 mb-0 fw-bold">Already have an Account?</p>
-                                        <a class="text-primary fw-bold ms-2" href="{{ route('login') }}">Sign
-                                            In</a>
-                                    </div>
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <p class="fs-4 mb-0 fw-bold">Already have an Account </p>
+                                            <a class="text-primary fw-bold ms-2" href="{{ route('login') }}">login</a>
+                                        </div>
                                 </form>
                             </div>
                         </div>

@@ -8,6 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="{{ $setting != '' ? asset($setting->file_path) : '' }}" type="image/gif" />
     <link rel="stylesheet" href="{{ asset('backend/assets/css/styles.min.css') }}" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
@@ -29,7 +30,8 @@
 
                                 <form>
                                     <div class="mb-3">
-                                        <label for="exampleInputEmail1" class="form-label">Phone Number: <code>use (+977 Before Number )</code></label>
+                                        <label for="exampleInputEmail1" class="form-label">Phone Number: <code>use (+977
+                                                Before Number )</code></label>
                                         <input type="text" class="form-control" name="phone" id="number"
                                             placeholder="+977 ********">
                                         <div id="recaptcha-container"></div>
@@ -51,6 +53,11 @@
                                             code</button>
                                     </form>
                                 </div>
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <p class="fs-4 mb-0 fw-bold">Already have an Account?</p>
+                                    <a class="text-primary fw-bold ms-2" href="{{ route('login') }}">Sign
+                                        In</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -59,16 +66,16 @@
         </div>
     </div>
     <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
         var firebaseConfig = {
-            apiKey: "AIzaSyDnPEFtJXvwJDGIIPBSYWzqxZWdfZa5RGE",
-            authDomain: "abcbazzar.firebaseapp.com",
-            projectId: "abcbazzar",
-            storageBucket: "abcbazzar.appspot.com",
-            messagingSenderId: "881345599737",
-            appId: "1:881345599737:web:0a45cdaa209821d0c7ea28",
-            measurementId: "G-E0961Z7557"
+            apiKey: "AIzaSyCtlfh56N5G3h6xlhhdM1AmiszE162bR2Q",
+            authDomain: "otp-verification-2a27b.firebaseapp.com",
+            projectId: "otp-verification-2a27b",
+            storageBucket: "otp-verification-2a27b.appspot.com",
+            messagingSenderId: "229490937364",
+            appId: "1:229490937364:web:5b351e576a14ec3a5b2101",
+            measurementId: "G-K0BBWD13M7"
         };
         firebase.initializeApp(firebaseConfig);
     </script>
@@ -86,60 +93,53 @@
             var number = $("#number").val();
             var csrfToken = $('meta[name="csrf-token"]').attr('content');
             $.ajax({
-                    url: "{{ route('phone_otp_store') }}",
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-Token': csrfToken
-                    },
-                    data: {
-                        phone: $("#number").val(),
-                    },
-                    success: function(response) {
-                        console.log('Data stored successfully:', response);
-                    },
-                    error: function(error) {
-                        console.error('Error storing data:', error);
+                url: "{{ route('phone_otp_store') }}",
+                method: 'POST',
+                headers: {
+                    'X-CSRF-Token': csrfToken
+                },
+                data: {
+                    phone: $("#number").val(),
+                },
+                success: function(response) {
+                    var status = response.status;
+                    var message = response.message;
+                    if (status === "not_active") {
+                        firebase.auth().signInWithPhoneNumber(number, window.recaptchaVerifier).then(function(
+                            confirmationResult) {
+                            window.confirmationResult = confirmationResult;
+                            coderesult = confirmationResult;
+                            console.log(coderesult);
+                            toastr.success('Token has Send to Youp Phone.');
+                        }).catch(function(error) {
+                            $("#error").text(error.message);
+                            $("#error").show();
+                        });
+
+                    } else if (status === "active") {
+                        toastr.error(message);
                     }
-                });
 
+                },
+                error: function(error) {
+                    console.error('Error storing data:', error);
+                }
+            });
 
-            // firebase.auth().signInWithPhoneNumber(number, window.recaptchaVerifier).then(function(confirmationResult) {
-            //     window.confirmationResult = confirmationResult;
-            //     coderesult = confirmationResult;
-            //     console.log(coderesult);
-
-            //     $.ajax({
-            //         url: "{{ route('phone_otp_store') }}",
-            //         method: 'POST',
-            //         headers: {
-            //             'X-CSRF-Token': csrfToken
-            //         },
-            //         data: {
-            //             phone: $("#number").val(),
-            //         },
-            //         success: function(response) {
-            //             console.log('Data stored successfully:', response);
-            //         },
-            //         error: function(error) {
-            //             console.error('Error storing data:', error);
-            //         }
-            //     });
-
-            //     $("#successAuth").text("Message sent");
-            //     $("#successAuth").show();
-            // }).catch(function(error) {
-            //     $("#error").text(error.message);
-            //     $("#error").show();
-            // });
         }
 
         function verify() {
             var code = $("#verification").val();
+            var phone = $("#number").val();
             coderesult.confirm(code).then(function(result) {
                 var user = result.user;
                 console.log(user);
                 $("#successOtpAuth").text("Auth is successful");
                 $("#successOtpAuth").show();
+                setTimeout(() => {
+                    window.location.href = '/register/'+ phone;
+                }, 3000);
+
             }).catch(function(error) {
                 $("#error").text(error.message);
                 $("#error").show();

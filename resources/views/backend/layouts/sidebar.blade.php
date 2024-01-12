@@ -69,7 +69,7 @@
                 @role('seller')
                 <li class="sidebar-item">
                     <a class="sidebar-link {{ request()->is(['product*', 'trashed/product*']) ? 'active' : '' }}"
-                        href="{{ route('admin.product.index') }}" aria-expanded="false">
+                        href="{{ route('seller.product.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-cards"></i>
                         </span>

@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(Request $request): void
     {
         Paginator::useBootstrap();
-        view()->composer(['otp.verify_otp','backend.layouts.sidebar','backend.layouts.main','auth.login','auth.register','frontend.layouts.main','frontend.section.logo'], function ($view) use ($request) {
+        view()->composer(['otp.verify_otp','backend.layouts.sidebar','backend.layouts.main','auth.login','auth.register','frontend.layouts.main','frontend.layouts.section.header','frontend.layouts.section.footer'], function ($view) use ($request) {
             $view->with('setting', Setting::hassetting($request));
         });
 
@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('products', Product::hasproduct($request));
         });
 
-        view()->composer(['frontend.section.header'], function ($view) use ($request) {
+        view()->composer(['frontend.section.header','frontend.pages.home'], function ($view) use ($request) {
             $view->with('categories', Category::hascategory($request));
         });
 

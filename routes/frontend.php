@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Frontend\FrontendController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\OTP\PhoneAuthController;
@@ -25,16 +26,22 @@ Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
 
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
+Route::get('/sell-old-mobile', function () {
+    return view('frontend.pages.sell_phone');
+})->name('sell_old_mobile');
+
+Route::post('/sell-old-mobile', [FrontendController::class,'store'])->name('sell_mobile');
+
+
+// Route::get('/register/{phone}', function () {
+//     return view('auth.register');
+// })->name('register');
 
 // OTP Verification
 
 Route::get('phone-auth', [PhoneAuthController::class, 'index'])->name('phone_otp');
 Route::post('phone-auth', [PhoneAuthController::class, 'store'])->name('phone_otp_store');
-
+Route::get('/register/{phone}', [PhoneAuthController::class, 'register'])->name('register')->name('register');
 Route::resource('search',SearchController::class);
 Route::resource('product-detail',ProductdetailController::class);
 Route::resource('send-enquiry',SendEnquiryController::class);
-

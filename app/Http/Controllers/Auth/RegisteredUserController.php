@@ -34,17 +34,23 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'phone' => ['required','digits:10','unique:users,phone'],
+            'phone' => 'required|digits:10|unique:users,phone',
             'password' => ['required','string','min:8','confirmed' ],
             'password_confirmation' => ['required','string','min:8','same:password' ],
         ]);
 
-        $user = User::create([
+
+        $user = User::updateOrCreate(
+            [
+                'phone'=>$request->phone,
+            ],
+            [
             'name' => $request->name,
             'phone'=>$request->phone,
             'email' => $request->email,
             'email_verified_at'=>now(),
             'password' => Hash::make($request->password),
+            'active'=>1,
         ]);
 
         $user->assignRole('seller');

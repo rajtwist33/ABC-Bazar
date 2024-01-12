@@ -29,11 +29,16 @@ class PhoneAuthController extends Controller
 
                 return response([
                     'status'=>'not_active',
-                    'alert'=>'The phone number is Saved Successfully']);
+                    'message'=>'The phone number is Saved Successfully']);
         }else{
             return response([
                 'status'=>'active',
-                'alert'=>'This phone number is already Active']);
+                'message'=>'This phone number is already Active']);
         }
+    }
+
+    public function register(Request $request, $phone){
+      
+        return view('auth.register',compact('phone'));
     }
 }
