@@ -68,7 +68,7 @@
                             <option value="Below-Average">Below Average -Heavy Dents, Cracks, Discoloration</option>
                         </select>
                     </div>
-                    <hr>
+                    <hr class="mt-4">
                     <h4>About Phone</h4>
                     <div class="col-12">
                         <div class="row">
@@ -162,7 +162,7 @@
                             </div>
                         </div>
                     </div>
-                    <hr>
+                    <hr class="mt-4">
                     <h4>Upload Phone Images</h4>
                     <div class="col-md-3 mb-3">
                         <strong for=""> Front part</strong>
@@ -194,7 +194,7 @@
                         <input type="file" name="with_model" class="dropify" id="input-file"
                             data-allowed-file-extensions="jpg jpeg png gif" />
                     </div>
-                    <hr>
+                    <hr class="mt-4">
                     <div class="col-12">
                         <h4>About Phone Defect</h4>
                         <div class="col-md-12 mb-2">
@@ -224,10 +224,14 @@
                                 @enderror
                         </div>
                     </div>
-                    <div class="col-12 mt-2">
-                        <button class="btn btn-primary float-end" type="submit">Next</button>
-                    </div>
                 </div>
+                <div class="row" id="billing_details">
+                    @include('frontend.pages.biiling_details')
+                </div>
+                <div class="col-12 mt-2">
+                    <button class="btn btn-primary float-end" type="submit" id="submit_btn">Next</button>
+                </div>
+
             </form>
         </div>
     </div>
@@ -251,7 +255,7 @@
                 ],
                 placeholder: 'Start typing here...',
             });
-
+            $('#billing_details').hide();
             //Dropify
             var dropify = $('.dropify').dropify();
             $('.needs-validation').on('submit', function(event) {
@@ -311,15 +315,21 @@
                 }
                 if (isValid) {
                     event.preventDefault();
+                    $('#phone_details').hide();
+                    $('#billing_details').show();
+                    $('#submit_btn').text('Submit');
                     var formAction = form.attr('action');
                     var csrfToken = form.find('input[name="_token"]').val();
                     $.ajax({
                         url: formAction,
                         type: 'POST',
-                        data: form.serialize(),
+                        contentType: false,
+                        processData: false,
+                        data: new FormData(form[0]),
                         headers: {
                             'X-CSRF-Token': csrfToken
                         },
+
                         success: function(response) {
                             // Handle success response
                             console.log(response);

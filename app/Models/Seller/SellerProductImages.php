@@ -15,6 +15,5 @@ class SellerProductImages extends Model
         'photo_with_battery_percentage',
         'photo_with_warrenty',
         'photo_with_model',
-        'photo_with_serial_no'
     ];
 }
