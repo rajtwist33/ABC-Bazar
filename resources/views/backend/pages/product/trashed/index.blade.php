@@ -8,18 +8,21 @@
 @endsection
 @section('main')
     <div class="container">
-        <a href="{{ route('admin.product.index') }}" class="float-right btn btn-danger mb-2" id="trash">UnTrash</a>
+        <a href="{{ route('admin.product.index') }}" class="float-right btn btn-danger mb-2" id="trash">Back</a>
         <table class="table data-table table-responsive">
             <thead class="thead-dark">
                 <tr>
                     <th>No</th>
                     <th>Product Code</th>
-                    <th>Category</th>
+                    <th>Image</th>
                     <th>Model</th>
-                    <th>Price</th>
-                    <th>Trashed Date</th>
+                    <th>Mobile Condition</th>
+                    <th>Seller Name</th>
+                    <th>Seller Phone</th>
+                    <th>City</th>
+                    <th>Created Date</th>
                     <th width="105px">Action</th>
-                </tr>
+                    </tr>
             </thead>
             <tbody>
             </tbody>
@@ -52,8 +55,8 @@
                     },
                     {
                         "className": "text-center",
-                        data: 'category',
-                        name: 'category'
+                        data: 'image',
+                        name: 'image'
                     },
                     {
                         "className": "text-center",
@@ -62,8 +65,23 @@
                     },
                     {
                         "className": "text-center",
-                        data: 'price',
-                        name: 'price',
+                        data: 'mobile_condition',
+                        name: 'mobile_condition',
+                    },
+                    {
+                        "className": "text-center",
+                        data: 'seller_name',
+                        name: 'seller_name',
+                    },
+                    {
+                        "className": "text-center",
+                        data: 'seller_phone',
+                        name: 'seller_phone',
+                    },
+                    {
+                        "className": "text-center",
+                        data: 'seller_city',
+                        name: 'seller_city',
                     },
                     {
                         "className": "text-center",

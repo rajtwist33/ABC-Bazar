@@ -31,6 +31,7 @@ return new class extends Migration
             $table->foreign('approved_by')->references('id')->on('users')->onDelete('cascade');
             $table->text('slug')->nullable();
             $table->text('slug_display')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -14,10 +14,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-5  pe-4">
                 <li class="nav-item ">
-                    <a class="nav-link active" aria-current="page" href="{{url('/')}}">Home</a>
+                    <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" aria-current="page" href="{{url('/')}}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="{{route('sell_old_mobile')}}">Sell Phone</a>
+                    <a class="nav-link {{ request()->is('sell-old-mobile') ? 'active' : '' }}" href="{{route('sell_old_mobile')}}">Sell Phone</a>
                 </li>
 
             </ul>

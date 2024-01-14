@@ -9,6 +9,7 @@ use App\Models\Admin\Category;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\ProductImage;
 use App\Models\Admin\ProductImperfectionImage;
+use App\Models\Seller\SellerProduct;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\Datatables;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -19,73 +20,72 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $page ="Product";
-        $data = Product::with('hascategory')->where('created_by',Auth::user()->id)->get();
-
+        $data = SellerProduct::with(['product_image','detail'])->where('approved_status','pending')->latest('id')->get();
         if ($request->ajax()) {
-            $data = Product::latest()->where('created_by',Auth::user()->id)->get();
+            $data = SellerProduct::with(['product_image','detail'])->where('approved_status','pending')->latest('id')->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('product_code', function($data){
-                    if($data->category_id == 1){
-                            $product_code = "<span class='text-primary'>". $data->product_code. "</span>";
-                        }else{
-                            $product_code = "<span class='text-success'>". $data->product_code. "</span>";
-                        }
+
+                $product_code = "<span class='text-success'>". $data->product_code. "</span>";
+
                     return $product_code;
                 })
-                ->addColumn('category', function($data){
-                    if($data->category_id == 1){
-                    $category = "<span class='text-primary'>". $data->hascategory->title. "</span>";
-                    }else{
-                        $category = "<span class='text-success'>". $data->hascategory->title. "</span>";
+               ->addColumn('image', function ($data) {
+                    if (file_exists($data->product_image->front_part)) {
+                        $url = asset($data->product_image->front_part);
+                        $title = $data->product_code;
+                        return '<a href="' . $url . '" target="_blank"><img src="' . $url . '"    class="image-fluid" width=80%;/ alt="' . $title . '"> </a>';
+                    } else {
+                        $url = url('default_image/not.jpg');
+                        $title = "image not found";
+                        return '<a href="' . $url . '" target="_blank"><img src="' . $url . '"  class="image-fluid" width=80%;/ alt="' . $title . '"> </a>';
                     }
-                    return $category;
                 })
                 ->addColumn('model', function($data){
-                    if($data->category_id == 1){
-                    $model = "<span class='text-primary'>". $data->title. "</span>";
-                    }else{
-                        $model = "<span class='text-success'>". $data->title. "</span>";
-                    }
+
+                    $model = "<span class='text-dark'>" . $data->model . "</span>";
+
                     return $model;
                 })
-                ->addColumn('price', function($data){
-                    if($data->category_id == 1){
-                    $price = "<span class='text-primary'> Rs. ". $data->price. "</span>";
-                    }else{
-                        $price = "<span class='text-success'> Rs. ". $data->price. "</span>";
-                    }
-                    return $price;
+                ->addColumn('mobile_condition', function($data){
+
+                    $mobile_condition = "<span class='text-dark'>". $data->mobile_condition. "</span>";
+
+                    return $mobile_condition;
+                })
+                ->addColumn('seller_name', function($data){
+
+                    $seller_name = "<span class='text-dark'> ". $data->detail->name. "</span>";
+
+                    return $seller_name;
+                })
+                ->addColumn('seller_phone', function($data){
+
+                    $seller_phone = "<span class='text-dark'> ". $data->detail->phone. "</span>";
+
+                    return $seller_phone;
+                })
+                ->addColumn('seller_city', function($data){
+
+                    $seller_city = "<span class='text-dark'> ". $data->detail->city. "</span>";
+
+                    return $seller_city;
                 })
                 ->addColumn('date',function($data){
-                    $date = "<span class='text-primary'> ". $data->created_at->format('Y-M-d') . ' </br>' . $data->created_at->format('H:i:A'). "</span>";
+                    $date = "<span class='text-dark'> ". $data->created_at->format('Y-M-d') . ' </br>' . $data->created_at->format('H:i:A'). "</span>";
                     return $date;
                 })
                 ->addColumn('action', function($row){
-                    $edit = '<a href="' . route('admin.product.edit', $row->slug) . '" class="edit btn btn-primary btn-sm m-1" title="Edit">Edit</i></a>';
-                    $delete = '<button  title="move trash"  data-id="' . $row->id . '"  class="btn btn-danger btn-sm m-1 delete-btn"> Move Trash</button>';
-                    return  $edit . " " . $delete;
+                    // $edit = '<a href="' . route('admin.product.edit', $row->id) . '" class="edit btn btn-primary btn-sm m-1" title="Edit">Edit</i></a>';
+                    $view = '<a href="' . route('admin.product.show', $row->id) . '" class="view btn btn-primary btn-sm m-1" title="Edit">View</i></a>';
+                    $delete = '<button  title="move trash"  data-id="' . $row->id . '"  class="btn btn-danger btn-sm m-1 delete-btn">Reject</button>';
+                    return   $view . " " . $delete;
                 })
-                ->rawColumns(['product_code','category','model','price','date','action'])
+                ->rawColumns(['product_code','image','model','mobile_condition','seller_name','seller_phone','seller_city','date','action'])
                 ->make(true);
         }
         return view('backend.pages.product.index',compact('page'));
-    }
-
-
- public function productcode(Request $request){
-        $pre = Category::where('id',$request->id)->select('title')->first();
-        $product_id = $pre->title . rand(1, 9999);
-        return response()->json([
-                'product_id'=>$product_id,
-        ]);
- }
-
-    public function create()
-    {
-        $page ="Product | Create";
-        $categories = Category::get();
-        return view('backend.pages.product.create',compact('page','categories'));
     }
 
 
@@ -197,33 +197,12 @@ class ProductController extends Controller
         }
     }
 
-    public function dropzoneStore(Request $request)
-    {
 
-        $file = $request->file('file');
-        $image_name = md5(rand(1000, 10000));
-        $ext = strtolower($file->getClientOriginalExtension());
-        $image_full_name = $image_name . '.' . $ext;
-        $uploade_path = 'uploads/product/images/';
-        $image_url = $uploade_path . $image_full_name;
-        $file->move($uploade_path, $image_full_name);
-        ProductImage::UpdateOrcreate(
-            [
-                'id' => $request->data_id,
-            ],
-            [
-                'product_id' => $request->product_id,
-                'image'=> $image_full_name,
-                'file_path'=> $image_url,
-
-            ]
-        );
-
-        return response()->json(['success'=>$image_full_name]);
-    }
     public function show(string $id)
     {
-        //
+        $page =" Product | View ";
+        $data_lists = SellerProduct::with(['product_image','detail'])->where('id',$id)->first();
+        return view('backend.pages.product.view',compact('page','data_lists'));
     }
 
 
@@ -247,72 +226,90 @@ class ProductController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $record = Product::find($id);
+        $record = SellerProduct::find($id);
         if (!$record) {
             return response()->json(['success' => 'Record not found.'], 404);
         }
-
+        $record->update([
+            'approved_status' => 'rejected',
+            'approved_by'=>Auth::user()->id,
+        ]);
         $record->delete();
-        return response()->json(['success' => 'Record Moved to Trash.']);
+        return response()->json(['success' => 'Product  Rejected Success.']);
     }
     public function trashed(Request $request)
     {
-        $page ="Product";
-        $data = Product::get();
+        $page ="Product Rejected";
+        $data = SellerProduct::onlyTrashed()->with(['product_image','detail'])->where('approved_status','rejected')->latest('id')->get();
         if ($request->ajax()) {
-            $data = Product::onlyTrashed()->where('created_by',Auth::user()->id)->latest()->get();
+            $data = SellerProduct::onlyTrashed()->with(['product_image','detail'])->where('approved_status','rejected')->latest('id')->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('product_code', function($data){
-                    if($data->category_id == 1){
-                            $product_code = "<span class='text-primary'>". $data->product_code. "</span>";
-                        }else{
-                            $product_code = "<span class='text-success'>". $data->product_code. "</span>";
-                        }
+
+                $product_code = "<span class='text-success'>". $data->product_code. "</span>";
+
                     return $product_code;
                 })
-                ->addColumn('category', function($data){
-                    if($data->category_id == 1){
-                    $category = "<span class='text-primary'>". $data->hascategory->title. "</span>";
-                    }else{
-                        $category = "<span class='text-success'>". $data->hascategory->title. "</span>";
+               ->addColumn('image', function ($data) {
+                    if (file_exists($data->product_image->front_part)) {
+                        $url = asset($data->product_image->front_part);
+                        $title = $data->product_code;
+                        return '<a href="' . $url . '" target="_blank"><img src="' . $url . '"    class="image-fluid" width=80%;/ alt="' . $title . '"> </a>';
+                    } else {
+                        $url = url('default_image/not.jpg');
+                        $title = "image not found";
+                        return '<a href="' . $url . '" target="_blank"><img src="' . $url . '"  class="image-fluid" width=80%;/ alt="' . $title . '"> </a>';
                     }
-                    return $category;
                 })
                 ->addColumn('model', function($data){
-                    if($data->category_id == 1){
-                    $model = "<span class='text-primary'>". $data->title. "</span>";
-                    }else{
-                        $model = "<span class='text-success'>". $data->title. "</span>";
-                    }
+
+                    $model = "<span class='text-dark'>" . $data->model . "</span>";
+
                     return $model;
                 })
-                ->addColumn('price', function($data){
-                    if($data->category_id == 1){
-                    $price = "<span class='text-primary'> Rs. ". $data->price. "</span>";
-                    }else{
-                        $price = "<span class='text-success'> Rs. ". $data->price. "</span>";
-                    }
-                    return $price;
+                ->addColumn('mobile_condition', function($data){
+
+                    $mobile_condition = "<span class='text-dark'>". $data->mobile_condition. "</span>";
+
+                    return $mobile_condition;
+                })
+                ->addColumn('seller_name', function($data){
+
+                    $seller_name = "<span class='text-dark'> ". $data->detail->name. "</span>";
+
+                    return $seller_name;
+                })
+                ->addColumn('seller_phone', function($data){
+
+                    $seller_phone = "<span class='text-dark'> ". $data->detail->phone. "</span>";
+
+                    return $seller_phone;
+                })
+                ->addColumn('seller_city', function($data){
+
+                    $seller_city = "<span class='text-dark'> ". $data->detail->city. "</span>";
+
+                    return $seller_city;
                 })
                 ->addColumn('date',function($data){
-                    $date = "<span class='text-primary'> ". $data->deleted_at->format('Y-M-d') . ' </br>' . $data->deleted_at->format('H:i:A'). "</span>";
+                    $date = "<span class='text-dark'> ". $data->created_at->format('Y-M-d') . ' </br>' . $data->created_at->format('H:i:A'). "</span>";
                     return $date;
                 })
                 ->addColumn('action', function($row){
-
                     $edit = '<button class="edit btn btn-primary btn-sm m-1 edit-btn" data-id="' . $row->id . '" title="restore">Restore</button>';
                     $delete ='<button  title="Delete"  data-id="' . $row->id . '"  class="btn btn-danger btn-sm m-1 delete-btn"> Permanent Delete</button>';
                     return  $edit . " " . $delete;
                 })
-                ->rawColumns(['product_code','category','model','price','date','action'])
+                ->rawColumns(['product_code','image','model','mobile_condition','seller_name','seller_phone','seller_city','date','action'])
                 ->make(true);
         }
+
         return view('backend.pages.product.trashed.index',compact('page'));
     }
 
     public function forceDelete($id){
-        $data  = Product::where('id', $id)->withTrashed()->forceDelete();
+        $data  = SellerProduct::where('id', $id)->withTrashed()->forceDelete();
         if (!$data) {
             return response()->json(['success' => 'Record not found.'], 404);
         }
@@ -320,8 +317,18 @@ class ProductController extends Controller
     }
 
     public function restore($id){
-        $data  = Product::where('id', $id)->withTrashed()->restore();
-        return response()->json(['success' => 'Record Restore successfully.']);
+        $data = SellerProduct::withTrashed()->find($id);
+        if ($data) {
+            $data->update([
+                'approved_status' => 'pending'
+            ]);
+
+            $data->restore();
+
+            return response()->json(['success' => 'Record restored successfully.']);
+        } else {
+            return response()->json(['error' => 'Record not found.'], 404);
+        }
     }
 
     public function delete_product_image($id){

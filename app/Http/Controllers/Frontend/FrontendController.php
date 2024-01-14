@@ -51,12 +51,12 @@ class FrontendController extends Controller
 
         DB::beginTransaction();
         try {
-            $product_code = 'mobile' . rand(1111, 9999);
+
             $slug = strtolower($request->model_name);
             $slug_display =  $slug . rand(1111, 9999);
 
             $seller_product =  SellerProduct::create([
-                            'product_code' =>$product_code,
+                            'product_code' =>$request->product_code,
                             'model' =>$request->model_name,
                             'storage' =>$request->storage,
                             'warenty_left' =>$request->warrenty_left,
@@ -124,7 +124,7 @@ class FrontendController extends Controller
                 }
 
                     DB::commit();
-                    return response()->json(['success' => 'Your Mobile has Successfully Stored for your Sale.']);
+                    return response()->json(['success' => 'Your Mobile has Successfully Stored for a Sale.']);
 
             } catch (\Exception $e) {
                 // If an error occurs, rollback the transaction

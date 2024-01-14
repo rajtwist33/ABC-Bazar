@@ -24,7 +24,10 @@
                 enctype="multipart/form-data">
                 @csrf
                 <div class="row" id="phone_details">
-                    <h4>Phone Information </h4>
+                    <h4 class=" mt-2 mb-2">Product Code: <strong class="text-success">{{ $product_code }}</strong></h4>
+                    <input type="hidden" name="product_code" value="{{ $product_code }}" readonly>
+                    <hr>
+                    <h5>Phone Information </h5>
                     <div class="col-md-3">
                         <strong for="validationCustom01" class="form-label">Model Name</strong>
                         <input type="text" name="model_name" class="form-control" id="validationCustom01" value=""
@@ -67,7 +70,7 @@
                         </select>
                     </div>
                     <hr class="mt-4">
-                    <h4>About Phone</h4>
+                    <h5>About Phone</h5>
                     <div class="col-12">
                         <div class="row">
                             <div class="col-md-4 mb-2">
@@ -94,8 +97,8 @@
                                 <div class="card">
                                     <div class="card-body feature-group">
                                         <strong> Is your Screen Original</strong> <br>
-                                        <input class="form-check-input" type="radio" name="original_screen" value="yes"
-                                            id="screen_original1">
+                                        <input class="form-check-input" type="radio" name="original_screen"
+                                            value="yes" id="screen_original1">
                                         <label class="form-check-label" for="screen_original1">
                                             Yes
                                         </label>
@@ -162,7 +165,7 @@
                     </div>
                     <hr class="mt-4">
                     <div class="col-12">
-                        <h4>About Phone Defect</h4>
+                        <h5>About Phone Defect</h5>
 
                         <div class="col-md-12 mb-2">
                             <div class="card">
@@ -192,7 +195,7 @@
                         </div>
                     </div>
                     <hr class="mt-4">
-                    <h4>Upload Phone Images</h4>
+                    <h5>Upload Phone Images</h5>
                     <div class="row">
                         <div class="col-md-3 mb-3">
                             <strong for=""> Front part</strong>
@@ -333,14 +336,15 @@
                         },
                         success: function(response) {
                             var success = response.success;
-                            console.log(success);
-                            alert(success);
+                            toastr.success(response.success);
+                            setTimeout(function() {
+                                window.location.href = '/';
+                            }, 3000);
                         },
                         error: function(xhr, status, error) {
                             var errors = xhr.responseJSON.errors;
                             $.each(errors, function(key, value) {
                                 $('#' + key + '-error').text(value[0]);
-                                
                             });
                         }
                     });

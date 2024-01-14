@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('with_battery_percentage')->nullable();
             $table->text('with_warrenty')->nullable();
             $table->text('with_model')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

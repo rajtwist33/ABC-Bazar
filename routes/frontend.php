@@ -27,7 +27,8 @@ Route::get('/login', function () {
 })->name('login');
 
 Route::get('/sell-old-mobile', function () {
-    return view('frontend.pages.sell_phone');
+    $product_code = 'Mobile'.rand(1111,9999);
+    return view('frontend.pages.sell_phone',compact('product_code'));
 })->name('sell_old_mobile');
 
 Route::post('/sell-old-mobile', [FrontendController::class,'store'])->name('sell_mobile');

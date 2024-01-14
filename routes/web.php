@@ -20,8 +20,7 @@ Route::middleware(['auth'])->group(function () {
                 'product'=>ProductController::class,
                 'setting'=>SettingController::class,
             ]);
-            Route::post('productcode',[ProductController::class,'productcode'])->name('productcode');
-    });
+        });
 
 
     //Category
@@ -59,4 +58,3 @@ require __DIR__.'/seller.php';
 
 require __DIR__.'/auth.php';
 require __DIR__.'/frontend.php';
-

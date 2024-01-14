@@ -9,17 +9,20 @@
 @endsection
 @section('main')
     <div class="container">
-        <a href="{{ route('admin.product.create') }}" class="float-right btn btn-success mb-2"> Add Product</a>
-      @role('admin')  <a href="{{ route('admin.product.trashed') }}" class="float-right btn btn-danger mb-2">Trash</a>@endrole
-        <table class="table data-table table-responsive">
+      <a href="{{ route('admin.product.trashed') }}" class="float-right btn btn-danger mb-2">Rejected</a>
+      <h4>New Orders Arrived</h4>
+      <table class="table data-table table-responsive">
             <thead class="thead-dark">
                 <tr>
                     <th>No</th>
                     <th>Product Code</th>
-                    <th>Category</th>
+                    <th>Image</th>
                     <th>Model</th>
-                    <th>Price</th>
-                    <th>Date</th>
+                    <th>Mobile Condition</th>
+                    <th>Seller Name</th>
+                    <th>Seller Phone</th>
+                    <th>City</th>
+                    <th>Created Date</th>
                     <th width="105px">Action</th>
                     </tr>
                 </thead>
@@ -54,8 +57,8 @@
                     },
                     {
                         "className": "text-center",
-                        data: 'category',
-                        name: 'category'
+                        data: 'image',
+                        name: 'image'
                     },
                     {
                         "className": "text-center",
@@ -64,8 +67,23 @@
                     },
                     {
                         "className": "text-center",
-                        data: 'price',
-                        name: 'price',
+                        data: 'mobile_condition',
+                        name: 'mobile_condition',
+                    },
+                    {
+                        "className": "text-center",
+                        data: 'seller_name',
+                        name: 'seller_name',
+                    },
+                    {
+                        "className": "text-center",
+                        data: 'seller_phone',
+                        name: 'seller_phone',
+                    },
+                    {
+                        "className": "text-center",
+                        data: 'seller_city',
+                        name: 'seller_city',
                     },
                     {
                         "className": "text-center",
@@ -97,12 +115,12 @@
                 if ($(this).hasClass('delete-btn')) {
                     Swal.fire({
                         title: 'Are you sure?',
-                        text: 'Your Data move to Trash!',
+                        text: 'You Want To Reject!',
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, Move it!'
+                        confirmButtonText: 'Yes, Reject it!'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             // Perform AJAX deletion

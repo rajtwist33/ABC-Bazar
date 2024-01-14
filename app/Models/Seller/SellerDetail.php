@@ -3,11 +3,12 @@
 namespace App\Models\Seller;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
 class SellerDetail extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $fillable = [
         'seller_product_id',
         'name',
@@ -17,5 +18,6 @@ class SellerDetail extends Model
         'city',
         'zip_code',
         'agreed',
+        'deleted_at',
     ];
 }
