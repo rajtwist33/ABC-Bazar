@@ -15,13 +15,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('seller_product_id')->nullable();
             $table->foreign('seller_product_id')->references('id')->on('seller_products')->onDelete('cascade');
-            $table->text('front_photo')->nullable();
-            $table->text('back_photo')->nullable();
-            $table->text('photo_with_box')->nullable();
-            $table->text('photo_with_battery_percentage')->nullable();
-            $table->text('photo_with_warrenty')->nullable();
-            $table->text('photo_with_model')->nullable();
-            $table->text('photo_with_serial_no')->nullable();
+            $table->text('front_part')->nullable();
+            $table->text('back_part')->nullable();
+            $table->text('with_box')->nullable();
+            $table->text('with_battery_percentage')->nullable();
+            $table->text('with_warrenty')->nullable();
+            $table->text('with_model')->nullable();
             $table->timestamps();
         });
     }

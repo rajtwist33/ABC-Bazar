@@ -1,9 +1,11 @@
 <nav class="navbar navbar-expand-md navbar-dark  bg-dark">
     <div class="container-fluid">
         <img src="{{ $setting != '' ? asset($setting->file_path) : '' }}" class="d-none d-md-block" style="width: 5%; max-width: 400px; height: auto;">
-        <a class="navbar-brand " href="{{ url('/') }}">
+        <a class="navbar-brand d-none d-md-block" href="{{ url('/') }}">
                 {{ $setting != '' ? $setting->title : 'ABC ' }}
         </a>
+
+            <img src="{{ $setting != '' ? asset($setting->file_path) : '' }}" class="d-block d-md-none" style="width: 15%; max-width: 400px; height: auto;">
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

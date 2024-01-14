@@ -17,10 +17,11 @@ class SellerProduct extends Model
         'original_screen',
         'phone_unopened',
         'battery_original',
+        'mobile_condition',
+        'mdms_registered',
         'defect',
         'defect_description',
         'approved_status',
-        'created_by',
         'approved_by',
         'slug',
         'slug_display'

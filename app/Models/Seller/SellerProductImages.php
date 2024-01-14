@@ -9,11 +9,11 @@ class SellerProductImages extends Model
 {
     protected $fillable = [
         'seller_product_id',
-        'front_photo',
-        'back_photo',
-        'photo_with_box',
-        'photo_with_battery_percentage',
-        'photo_with_warrenty',
-        'photo_with_model',
+        'front_part',
+        'back_part',
+        'with_box',
+        'with_battery_percentage',
+        'with_warrenty',
+        'with_model',
     ];
 }

@@ -22,11 +22,11 @@ return new class extends Migration
             $table->enum('original_screen', ['yes', 'no'])->nullable();
             $table->enum('phone_unopened', ['yes', 'no'])->nullable();
             $table->enum('battery_original', ['yes', 'no'])->nullable();
+            $table->enum('mdms_registered', ['yes', 'no'])->nullable();
             $table->enum('defect', ['yes', 'no'])->nullable();
             $table->text('defect_description')->nullable();
+            $table->enum('mobile_condition', ['Good', 'Average','Below-Average'])->nullable();
             $table->enum('approved_status', ['pending', 'approved','rejected'])->default('pending');
-            $table->unsignedBigInteger('created_by')->nullable();
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('approved_by')->nullable();
             $table->foreign('approved_by')->references('id')->on('users')->onDelete('cascade');
             $table->text('slug')->nullable();

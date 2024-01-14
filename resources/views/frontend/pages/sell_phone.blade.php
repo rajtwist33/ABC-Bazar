@@ -18,7 +18,7 @@
             <li class="breadcrumb-item active" aria-current="page">Sell Phone</li>
         </ol>
     </nav>
-    <div class="card shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+    <div class="card shadow-lg pt-2 mb-5 bg-body-tertiary rounded">
         <div class="card-body">
             <form action="{{ route('sell_mobile') }}" method="post" class="row g-3 needs-validation" novalidate
                 enctype="multipart/form-data">
@@ -34,7 +34,7 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <strong for="validationCustom02" class="form-label">Storage</strong>
+                        <strong for="validationCustom02" class="form-label">Storage <code>(GB)</code></strong>
                         <input type="text" class="form-control" name="storage" id="validationCustom02" value=""
                             required>
                         <div class="valid-feedback">
@@ -42,13 +42,11 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <strong for="validationCustomUsername" class="form-label">Warrenty-Left</strong>
-                        <div class="input-group has-validation">
-                            <input type="date" class="form-control" name="warrenty-left" id="validationCustomUsername"
+                        <strong for="validationCustomUsername" class="form-label">Warrenty-Left
+                            <code>(Optional)</code></strong>
+                        <div class="input-group ">
+                            <input type="date" class="form-control" name="warrenty_left" id="validationCustomUsername"
                                 aria-describedby="inputGroupPrepend" required>
-                            <div class="invalid-feedback">
-                                Please enter Warrenty-left.
-                            </div>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -63,9 +61,9 @@
                         <strong for="validationDefault04" class="form-label">Choose Mobile Condition</strong>
                         <select class="form-select" id="validationDefault04" name="mobile_condition" required>
                             <option selected disabled value="">Choose...</option>
-                            <option value="Good">Good-Minor Scratches, No Dents, No Cracks.</option>
-                            <option value="Average">Average-Major Scratches, Small Dents, No Cracks.</option>
-                            <option value="Below-Average">Below Average -Heavy Dents, Cracks, Discoloration</option>
+                            <option value="Good">Good:Minor Scratches, No Dents, No Cracks.</option>
+                            <option value="Average">Average: Major Scratches, Small Dents, No Cracks.</option>
+                            <option value="Below-Average">Below Average: Heavy Dents, Cracks, Discoloration</option>
                         </select>
                     </div>
                     <hr class="mt-4">
@@ -78,12 +76,12 @@
                                         <strong> Is your Device Working Properly</strong> <br>
 
                                         <input class="form-check-input" type="radio" name="working_properly"
-                                            value="on" id="working_properly1">
+                                            value="yes" id="working_properly1">
                                         <label class="form-check-label" for="working_properly1">
                                             Yes
                                         </label>
                                         <input class="form-check-input" type="radio" name="working_properly"
-                                            value="off" id="working_properly2">
+                                            value="no" id="working_properly2">
                                         <label class="form-check-label" for="working_properly2">
                                             No
                                         </label>
@@ -96,13 +94,13 @@
                                 <div class="card">
                                     <div class="card-body feature-group">
                                         <strong> Is your Screen Original</strong> <br>
-                                        <input class="form-check-input" type="radio" name="screen_original" value="on"
+                                        <input class="form-check-input" type="radio" name="original_screen" value="yes"
                                             id="screen_original1">
                                         <label class="form-check-label" for="screen_original1">
                                             Yes
                                         </label>
-                                        <input class="form-check-input" type="radio" name="screen_original"
-                                            value="off" id="screen_original2">
+                                        <input class="form-check-input" type="radio" name="original_screen"
+                                            value="no" id="screen_original2">
                                         <label class="form-check-label" for="screen_original2">
                                             No
                                         </label>
@@ -114,12 +112,12 @@
                                     <div class="card-body feature-group">
                                         <strong> Is your Phone UnOpened</strong> <br>
                                         <input class="form-check-input" type="radio" name="phone_unopened"
-                                            value="on" id="phone_unopened1">
+                                            value="yes" id="phone_unopened1">
                                         <label class="form-check-label" for="phone_unopened1">
                                             Yes
                                         </label>
                                         <input class="form-check-input" type="radio" name="phone_unopened"
-                                            value="off" id="phone_unopened2">
+                                            value="no" id="phone_unopened2">
                                         <label class="form-check-label" for="phone_unopened2">
                                             No
                                         </label>
@@ -131,12 +129,12 @@
                                     <div class="card-body feature-group">
                                         <strong> Is your Phone Battery Original</strong> <br>
                                         <input class="form-check-input" type="radio" name="battery_original"
-                                            value="on" id="battery_original1">
+                                            value="yes" id="battery_original1">
                                         <label class="form-check-label" for="battery_original1">
                                             Yes
                                         </label>
                                         <input class="form-check-input" type="radio" name="battery_original"
-                                            value="off" id="battery_original2">
+                                            value="no" id="battery_original2">
                                         <label class="form-check-label" for="battery_original2">
                                             No
                                         </label>
@@ -148,12 +146,12 @@
                                     <div class="card-body feature-group">
                                         <strong> Is Your Phone MDMS Registered</strong> <br>
                                         <input class="form-check-input" type="radio" name="mdms_registered"
-                                            value="on" id="mdms_registered1">
+                                            value="yes" id="mdms_registered1">
                                         <label class="form-check-label" for="mdms_registered1">
                                             Yes
                                         </label>
                                         <input class="form-check-input" type="radio" name="mdms_registered"
-                                            value="off" id="mdms_registered2">
+                                            value="no" id="mdms_registered2">
                                         <label class="form-check-label" for="mdms_registered2">
                                             No
                                         </label>
@@ -163,50 +161,19 @@
                         </div>
                     </div>
                     <hr class="mt-4">
-                    <h4>Upload Phone Images</h4>
-                    <div class="col-md-3 mb-3">
-                        <strong for=""> Front part</strong>
-                        <input type="file" name="front_part" class="dropify" id="input-file"
-                            data-allowed-file-extensions="jpg jpeg png gif" />
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <strong for=""> Back part</strong>
-                        <input type="file" name="back_part" class="dropify" id="input-file"
-                            data-allowed-file-extensions="jpg jpeg png gif" />
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <strong for=""> With Box</strong>
-                        <input type="file" name="phone_with_box" class="dropify" id="input-file"
-                            data-allowed-file-extensions="jpg jpeg png gif" />
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <strong for=""> With Battery Percentage</strong>
-                        <input type="file" name="with_battery_percentage" class="dropify" id="input-file"
-                            data-allowed-file-extensions="jpg jpeg png gif" />
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <strong for=""> With Warrenty</strong>
-                        <input type="file" name="with_warrenty" class="dropify" id="input-file"
-                            data-allowed-file-extensions="jpg jpeg png gif" />
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <strong for=""> With Model and Serial Number</strong>
-                        <input type="file" name="with_model" class="dropify" id="input-file"
-                            data-allowed-file-extensions="jpg jpeg png gif" />
-                    </div>
-                    <hr class="mt-4">
                     <div class="col-12">
                         <h4>About Phone Defect</h4>
+
                         <div class="col-md-12 mb-2">
                             <div class="card">
                                 <div class="card-body feature-group">
                                     <strong> Is your Device Defected</strong> <br>
-                                    <input class="form-check-input" type="radio" name="device_defect" value="on"
+                                    <input class="form-check-input" type="radio" name="device_defect" value="yes"
                                         id="device_defect1">
                                     <label class="form-check-label" for="device_defect1">
                                         Yes
                                     </label>
-                                    <input class="form-check-input" type="radio" name="device_defect" value="off"
+                                    <input class="form-check-input" type="radio" name="device_defect" value="no"
                                         id="device_defect2">
                                     <label class="form-check-label" for="device_defect2">
                                         No
@@ -223,6 +190,41 @@
                                     <div class="alert alert-danger mt-1">{{ $message }}</div>
                                 @enderror
                         </div>
+                    </div>
+                    <hr class="mt-4">
+                    <h4>Upload Phone Images</h4>
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <strong for=""> Front part</strong>
+                            <input type="file" name="front_part" class="dropify" id="input-file"
+                                data-allowed-file-extensions="jpg jpeg png gif" />
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <strong for=""> Back part</strong>
+                            <input type="file" name="back_part" class="dropify" id="input-file"
+                                data-allowed-file-extensions="jpg jpeg png gif" />
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <strong for=""> With Box</strong>
+                            <input type="file" name="with_box" class="dropify" id="input-file"
+                                data-allowed-file-extensions="jpg jpeg png gif" />
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <strong for=""> With Battery Percentage</strong>
+                            <input type="file" name="with_battery_percentage" class="dropify" id="input-file"
+                                data-allowed-file-extensions="jpg jpeg png gif" />
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <strong for=""> With Warrenty</strong>
+                            <input type="file" name="with_warrenty" class="dropify" id="input-file"
+                                data-allowed-file-extensions="jpg jpeg png gif" />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <strong for=""> With Model and Serial Number</strong>
+                            <input type="file" name="with_model" class="dropify" id="input-file"
+                                data-allowed-file-extensions="jpg jpeg png gif" />
+                        </div>
+                        <hr class="mt-4">
                     </div>
                 </div>
                 <div class="row" id="billing_details">
@@ -329,14 +331,17 @@
                         headers: {
                             'X-CSRF-Token': csrfToken
                         },
-
                         success: function(response) {
-                            // Handle success response
-                            console.log(response);
+                            var success = response.success;
+                            console.log(success);
+                            alert(success);
                         },
-                        error: function(error) {
-                            // Handle error response
-                            console.error(error);
+                        error: function(xhr, status, error) {
+                            var errors = xhr.responseJSON.errors;
+                            $.each(errors, function(key, value) {
+                                $('#' + key + '-error').text(value[0]);
+                                
+                            });
                         }
                     });
                 }
@@ -347,7 +352,7 @@
                 if ($(this).prop('checked')) {
                     // Get the value of the selected radio button
                     var value = $(this).val();
-                    if (value == 'on') {
+                    if (value == 'yes') {
                         $('.defect-data').addClass('d-block').removeClass('d-none');
                     } else {
                         $('.defect-data').addClass('d-none').removeClass('d-block');

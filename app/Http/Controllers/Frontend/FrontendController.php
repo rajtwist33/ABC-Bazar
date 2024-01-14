@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Seller\SellerDetail;
+use App\Http\Controllers\Controller;
 use App\Models\Seller\SellerProduct;
 use App\Models\Seller\SellerProductImages;
-use Illuminate\Http\Request;
 
 class FrontendController extends Controller
 {
@@ -31,56 +32,107 @@ class FrontendController extends Controller
      */
     public function store(Request $request)
     {
-        $request->all([
-            'name'=>'required',
-            'phone'=>'required',
-            'email'=>'required',
-            'province'=>'required',
-            'city'=>'required',
-            'zip_code'=>'required',
-            'agreed'=>'required',
+
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'phone' => 'required|numeric|digits:10',
+            'province' => 'required',
+            'city' => 'required',
+            'agreed' => 'required',
+        ], [
+            'name.required' => 'Please Enter name .',
+            'phone.required' => 'please enter a phone.',
+            'phone.numeric' => 'please enter a valid phone number.',
+            'phone.digits' => 'The phone must be exactly 10 digits.',
+            'province.required' => 'please choose a province',
+            'city.required' => 'please enter a city.',
+            'agreed.required' => 'You must agree to the terms.',
         ]);
 
+        DB::beginTransaction();
+        try {
+            $product_code = 'mobile' . rand(1111, 9999);
+            $slug = strtolower($request->model_name);
+            $slug_display =  $slug . rand(1111, 9999);
 
-       $seller_product =  SellerProduct::create([
-                    'product_code' =>$request->model,
-                    'model' =>$request->model,
-                    'storage' =>$request->model,
-                    'warenty_left' =>$request->model,
-                    'battery_percentage' =>$request->model,
-                    'woking_properly' =>$request->model,
-                    'original_screen' =>$request->model,
-                    'phone_unopened' =>$request->model,
-                    'battery_original' =>$request->model,
-                    'defect' =>$request->model,
-                    'defect_description' =>$request->model,
-                    'approved_status' =>$request->model,
-                    'created_by' =>$request->model,
-                    'approved_by' =>$request->model,
-                    'slug' =>$request->model,
-                    'slug_display'  =>$request->model,
-        ]);
+            $seller_product =  SellerProduct::create([
+                            'product_code' =>$product_code,
+                            'model' =>$request->model_name,
+                            'storage' =>$request->storage,
+                            'warenty_left' =>$request->warrenty_left,
+                            'battery_percentage' =>$request->battery_percenatge,
+                            'woking_properly' =>$request->working_properly,
+                            'original_screen' =>$request->original_screen,
+                            'phone_unopened' =>$request->phone_unopened,
+                            'battery_original' =>$request->battery_original,
+                            'mobile_condition'=>$request->mobile_condition,
+                            'mdms_registered'=>$request->mdms_registered,
+                            'defect' =>$request->device_defect,
+                            'defect_description' =>$request->defect_description,
+                            'created_by' =>$request->model,
+                            'approved_by' =>$request->model,
+                            'slug' =>$slug,
+                            'slug_display' =>$slug_display
+                ]);
 
-        SellerProductImages::create([
-                    'seller_product_id'=>$request->model,
-                    'front_photo'=>$request->model,
-                    'back_photo'=>$request->model,
-                    'photo_with_box'=>$request->model,
-                    'photo_with_battery_percentage'=>$request->model,
-                    'photo_with_warrenty'=>$request->model,
-                    'photo_with_model'=>$request->model,
-        ]);
+                SellerDetail::create([
+                            'seller_product_id'=>$seller_product->id,
+                            'name'=>$request->name,
+                            'phone'=>$request->phone,
+                            'province'=>$request->province,
+                            'city'=>$request->city,
+                            'agreed'=>$request->agreed,
+                ]);
+                if ($request->hasFile('front_part') || $request->hasFile('back_part') ||  $request->hasFile('with_box')
+                            || $request->hasFile('with_battery_percentage') || $request->hasFile('with_warrenty')
+                            || $request->hasFile('with_model'))
+                    {
 
-        SellerDetail::create([
-                    'seller_product_id'=>$request->model,
-                    'name'=>$request->model,
-                    'phone'=>$request->model,
-                    'email'=>$request->model,
-                    'province'=>$request->model,
-                    'city'=>$request->model,
-                    'zip_code'=>$request->model,
-                    'agreed'=>$request->model,
-        ]);
+                    $fileFields = [
+                        'front_part',
+                        'back_part',
+                        'with_box',
+                        'with_battery_percentage',
+                        'with_warrenty',
+                        'with_model',
+                    ];
+                    $uploadedImages = [];
+                foreach ($fileFields as $field) {
+                        $file = $request->file($field);
+                        if ($file) {
+                            $image_name = md5(rand(1000, 10000));
+                            $ext = strtolower($file->getClientOriginalExtension());
+                            $image_full_name = $image_name . '.' . $ext;
+                            $uploade_path = 'uploads/seller/product/' . $field . '/images/';
+                            $image_url = $uploade_path . $image_full_name;
+                            $file->move($uploade_path, $image_full_name);
+
+                            $uploadedImages[$field] = $image_url;
+
+                        }
+                    }
+                    SellerProductImages::create([
+                        'seller_product_id' => $seller_product->id,
+                        'front_part' => $uploadedImages['front_part'] ?? null,
+                        'back_part' => $uploadedImages['back_part'] ?? null,
+                        'with_box' => $uploadedImages['with_box'] ?? null,
+                        'with_battery_percentage' => $uploadedImages['with_battery_percentage'] ?? null,
+                        'with_warrenty' => $uploadedImages['with_warrenty'] ?? null,
+                        'with_model' => $uploadedImages['with_model'] ?? null,
+                    ]);
+
+                }
+
+                    DB::commit();
+                    return response()->json(['success' => 'Your Mobile has Successfully Stored for your Sale.']);
+
+            } catch (\Exception $e) {
+                // If an error occurs, rollback the transaction
+                DB::rollBack();
+
+                // Handle the exception (e.g., log it or return an error response)
+                return response()->json(['error' => 'An error occurred while processing the request.']);
+            }
 
     }
 
