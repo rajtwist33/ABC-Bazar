@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Setting;
-use Yajra\DataTables\Facades\Datatables;
+use DataTables;
 use Illuminate\Support\Facades\Validator;
 class SettingController extends Controller
 {

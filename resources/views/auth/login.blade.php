@@ -56,15 +56,15 @@
                                                 Remeber this Device
                                             </label>
                                         </div>
-                                        <a class="text-primary fw-bold" href="./index.html">Forgot Password ?</a>
+                                        {{-- <a class="text-primary fw-bold" href="./index.html">Forgot Password ?</a> --}}
                                     </div>
                                     <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Sign
                                         In</button>
-                                    <div class="d-flex align-items-center justify-content-center">
+                                    {{-- <div class="d-flex align-items-center justify-content-center">
                                         <p class="fs-4 mb-0 fw-bold">New to {{$setting !='' ?  $setting->title : ''}}</p>
-                                        <a class="text-primary fw-bold ms-2" href="{{ route('register') }}">Create an
+                                        <a class="text-primary fw-bold ms-2" href="javascript::void(0)">Create an
                                             account</a>
-                                    </div>
+                                    </div> --}}
                                 </form>
                             </div>
                         </div>

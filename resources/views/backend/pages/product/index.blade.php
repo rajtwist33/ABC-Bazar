@@ -9,9 +9,10 @@
 @endsection
 @section('main')
     <div class="container">
-      <a href="{{ route('admin.product.trashed') }}" class="float-right btn btn-danger mb-2">Rejected</a>
+      <a href="{{ route('admin.product.trashed') }}" class="float-right btn btn-danger mb-2">Rejected Files</a>
       <h4>New Orders Arrived</h4>
-      <table class="table data-table table-responsive">
+      <div class="table-responsive">
+      <table class="table data-table">
             <thead class="thead-dark">
                 <tr>
                     <th>No</th>
@@ -29,6 +30,7 @@
                 <tbody>
                 </tbody>
             </table>
+      </div>
         </div>
     @endsection
 @section('script')

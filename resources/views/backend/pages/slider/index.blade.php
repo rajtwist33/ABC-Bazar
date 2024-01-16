@@ -10,7 +10,8 @@
     @include('backend.pages.slider.modal.create')
     <div class="container">
         <button type="button" class="float-right btn btn-success mb-2" id="category_btn">Add</button>
-        <table class="table data-table table-responsive">
+        <div class="table-responsive">
+        <table class="table data-table">
             <thead class="thead-dark">
                 <tr>
                     <th width="5%">No</th>
@@ -22,6 +23,7 @@
             <tbody>
             </tbody>
         </table>
+        </div>
     </div>
 @endsection
 @section('script')

@@ -22,6 +22,7 @@ Route::get('/clear', function () {
 Route::get('/', function () {
     return view('frontend.pages.home');
 })->name('home');
+
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');

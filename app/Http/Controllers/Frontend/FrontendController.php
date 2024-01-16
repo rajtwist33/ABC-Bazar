@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Seller\SellerDetail;
 use App\Http\Controllers\Controller;
 use App\Models\Seller\SellerProduct;
+use App\Http\Requests\MyValidationRequest;
 use App\Models\Seller\SellerProductImages;
 
 class FrontendController extends Controller
@@ -30,24 +31,8 @@ class FrontendController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(MyValidationRequest $request)
     {
-
-        $validatedData = $request->validate([
-            'name' => 'required',
-            'phone' => 'required|numeric|digits:10',
-            'province' => 'required',
-            'city' => 'required',
-            'agreed' => 'required',
-        ], [
-            'name.required' => 'Please Enter name .',
-            'phone.required' => 'please enter a phone.',
-            'phone.numeric' => 'please enter a valid phone number.',
-            'phone.digits' => 'The phone must be exactly 10 digits.',
-            'province.required' => 'please choose a province',
-            'city.required' => 'please enter a city.',
-            'agreed.required' => 'You must agree to the terms.',
-        ]);
 
         DB::beginTransaction();
         try {
@@ -69,8 +54,8 @@ class FrontendController extends Controller
                             'mdms_registered'=>$request->mdms_registered,
                             'defect' =>$request->device_defect,
                             'defect_description' =>$request->defect_description,
-                            'created_by' =>$request->model,
-                            'approved_by' =>$request->model,
+                            'created_by' => null,
+                            'approved_by' => null,
                             'slug' =>$slug,
                             'slug_display' =>$slug_display
                 ]);
@@ -124,7 +109,7 @@ class FrontendController extends Controller
                 }
 
                     DB::commit();
-                    return response()->json(['success' => 'Your Mobile has Successfully Stored for a Sale.']);
+                    return response()->json(['success' => 'Your Mobile Data has Successfully Stored.']);
 
             } catch (\Exception $e) {
                 // If an error occurs, rollback the transaction

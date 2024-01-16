@@ -9,7 +9,8 @@
 @section('main')
     <div class="container">
         <a href="{{ route('admin.product.index') }}" class="float-right btn btn-danger mb-2" id="trash">Back</a>
-        <table class="table data-table table-responsive">
+        <div class="table-responsive">
+        <table class="table data-table ">
             <thead class="thead-dark">
                 <tr>
                     <th>No</th>
@@ -27,6 +28,7 @@
             <tbody>
             </tbody>
         </table>
+        </div>
     </div>
 @endsection
 @section('script')

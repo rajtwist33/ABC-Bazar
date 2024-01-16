@@ -20,54 +20,52 @@
     </nav>
     <div class="card shadow-lg pt-2 mb-5 bg-body-tertiary rounded">
         <div class="card-body">
-            <form action="{{ route('sell_mobile') }}" method="post" class="row g-3 needs-validation" novalidate
-                enctype="multipart/form-data">
+            <form id="storeData" action="{{ route('sell_mobile') }}" method="post" class="row g-3 needs-validation"
+                novalidate enctype="multipart/form-data">
                 @csrf
-                <div class="row" id="phone_details">
+                <div id="phone_details">
                     <h4 class=" mt-2 mb-2">Product Code: <strong class="text-success">{{ $product_code }}</strong></h4>
                     <input type="hidden" name="product_code" value="{{ $product_code }}" readonly>
                     <hr>
-                    <h5>Phone Information </h5>
-                    <div class="col-md-3">
-                        <strong for="validationCustom01" class="form-label">Model Name</strong>
-                        <input type="text" name="model_name" class="form-control" id="validationCustom01" value=""
-                            required>
-                        <div class="valid-feedback">
-                            Looks good!
+                    <div class="row">
+                        <h5>Phone Information </h5>
+                        <div class="col-md-3">
+                            <strong for="validationCustom01" class="form-label">Model Name</strong>
+                            <input type="text" name="model_name" class="form-control" id="validationCustom01"
+                                value="" required>
+                            <span class="text-danger custom-error-text" id="error_model_name"></span>
+
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <strong for="validationCustom02" class="form-label">Storage <code>(GB)</code></strong>
-                        <input type="text" class="form-control" name="storage" id="validationCustom02" value=""
-                            required>
-                        <div class="valid-feedback">
-                            Looks good!
+                        <div class="col-md-3">
+                            <strong for="validationCustom02" class="form-label">Storage <code>(GB)</code></strong>
+                            <input type="text" class="form-control" name="storage" id="validationCustom02" value=""
+                                required>
+                            <span class="text-danger custom-error-text" id="error_storage"></span>
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <strong for="validationCustomUsername" class="form-label">Warrenty-Left
-                            <code>(Optional)</code></strong>
-                        <div class="input-group ">
-                            <input type="date" class="form-control" name="warrenty_left" id="validationCustomUsername"
-                                aria-describedby="inputGroupPrepend" required>
+
+                        <div class="col-md-3">
+                            <strong for="validationCustom02" class="form-label">Battery percentage</strong>
+                            <input type="text" class="form-control" name="battery_percenatge" id="validationCustom02"
+                                value="" required>
+                            <span class="text-danger custom-error-text" id="error_battery_percenatge"></span>
+
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <strong for="validationCustom02" class="form-label">Battery percentage</strong>
-                        <input type="text" class="form-control" name="battery_percenatge" id="validationCustom02"
-                            value="" required>
-                        <div class="valid-feedback">
-                            Looks good!
+                        <div class="col-md-3">
+                            <strong for="validationDefault04" class="form-label">Choose Mobile Condition</strong>
+                            <select class="form-select" id="validationDefault04" name="mobile_condition" required>
+                                <option selected value="">Choose...</option>
+                                <option value="Good">Good:Minor Scratches, No Dents, No Cracks.</option>
+                                <option value="Average">Average: Major Scratches, Small Dents, No Cracks.</option>
+                                <option value="Below-Average">Below Average: Heavy Dents, Cracks, Discoloration</option>
+                            </select>
+                            <span class="text-danger custom-error-text" id="error_mobile_condition"></span>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <strong for="validationDefault04" class="form-label">Choose Mobile Condition</strong>
-                        <select class="form-select" id="validationDefault04" name="mobile_condition" required>
-                            <option selected disabled value="">Choose...</option>
-                            <option value="Good">Good:Minor Scratches, No Dents, No Cracks.</option>
-                            <option value="Average">Average: Major Scratches, Small Dents, No Cracks.</option>
-                            <option value="Below-Average">Below Average: Heavy Dents, Cracks, Discoloration</option>
-                        </select>
+                        <div class="col-md-12 m-2">
+                            <strong for="validationCustomUsername" class="form-label">Warrenty-Left
+                                <code>(Optional)</code></strong>
+                            <textarea class="summernote" name="warrenty_left">{{ old('warrenty_left') }}</textarea>
+
+                        </div>
                     </div>
                     <hr class="mt-4">
                     <h5>About Phone</h5>
@@ -88,8 +86,9 @@
                                         <label class="form-check-label" for="working_properly2">
                                             No
                                         </label>
-
-
+                                        <div class="ml-2 mt-2">
+                                            <span class="text-danger custom-error-text" id="error_working_properly"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -107,6 +106,9 @@
                                         <label class="form-check-label" for="screen_original2">
                                             No
                                         </label>
+                                        <div class="ml-2 mt-2">
+                                            <span class="text-danger custom-error-text" id="error_original_screen"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -124,6 +126,9 @@
                                         <label class="form-check-label" for="phone_unopened2">
                                             No
                                         </label>
+                                        <div class="ml-2 mt-2">
+                                            <span class="text-danger custom-error-text" id="error_phone_unopened"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -141,6 +146,10 @@
                                         <label class="form-check-label" for="battery_original2">
                                             No
                                         </label>
+                                        <div class="ml-2 mt-2">
+                                            <span class="text-danger custom-error-text"
+                                                id="error_battery_original"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -158,6 +167,9 @@
                                         <label class="form-check-label" for="mdms_registered2">
                                             No
                                         </label>
+                                        <div class="ml-2 mt-2">
+                                            <span class="text-danger custom-error-text" id="error_mdms_registered"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -166,7 +178,6 @@
                     <hr class="mt-4">
                     <div class="col-12">
                         <h5>About Phone Defect</h5>
-
                         <div class="col-md-12 mb-2">
                             <div class="card">
                                 <div class="card-body feature-group">
@@ -181,6 +192,9 @@
                                     <label class="form-check-label" for="device_defect2">
                                         No
                                     </label>
+                                    <div class="ml-2 mt-2">
+                                        <span class="text-danger custom-error-text" id="error_device_defect"></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -197,24 +211,33 @@
                     <hr class="mt-4">
                     <h5>Upload Phone Images</h5>
                     <div class="row">
-                        <div class="col-md-3 mb-3">
+                        <div class="col-md-6 col-lg-4 mb-3">
                             <strong for=""> Front part</strong>
                             <input type="file" name="front_part" class="dropify" id="input-file"
                                 data-allowed-file-extensions="jpg jpeg png gif" />
+                            <div class="ml-2 mt-2">
+                                <span class="text-danger custom-error-text" id="error_front_part"></span>
+                            </div>
                         </div>
-                        <div class="col-md-3 mb-3">
+                        <div class="col-md-6 col-lg-4 mb-3">
                             <strong for=""> Back part</strong>
                             <input type="file" name="back_part" class="dropify" id="input-file"
                                 data-allowed-file-extensions="jpg jpeg png gif" />
+                            <div class="ml-2 mt-2">
+                                <span class="text-danger custom-error-text" id="error_back_part"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4 mb-3">
+                            <strong for=""> With Battery Percentage</strong>
+                            <input type="file" name="with_battery_percentage" class="dropify" id="input-file"
+                                data-allowed-file-extensions="jpg jpeg png gif" />
+                            <div class="ml-2 mt-2">
+                                <span class="text-danger custom-error-text" id="error_with_battery_percentage"></span>
+                            </div>
                         </div>
                         <div class="col-md-3 mb-3">
                             <strong for=""> With Box</strong>
                             <input type="file" name="with_box" class="dropify" id="input-file"
-                                data-allowed-file-extensions="jpg jpeg png gif" />
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <strong for=""> With Battery Percentage</strong>
-                            <input type="file" name="with_battery_percentage" class="dropify" id="input-file"
                                 data-allowed-file-extensions="jpg jpeg png gif" />
                         </div>
                         <div class="col-md-3 mb-3">
@@ -233,8 +256,11 @@
                 <div class="row" id="billing_details">
                     @include('frontend.pages.biiling_details')
                 </div>
-                <div class="col-12 mt-2">
-                    <button class="btn btn-primary float-end" type="submit" id="submit_btn">Next</button>
+                <div class="col-12 mt-2 ">
+                    <div class="spinner-border text-info float-end" role="status" id="spinner">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <button class="btn btn-primary float-end" type="submit" id="submit_btn">Submit</button>
                 </div>
 
             </form>
@@ -260,95 +286,55 @@
                 ],
                 placeholder: 'Start typing here...',
             });
+            $('#spinner').hide();
             $('#billing_details').hide();
+            $('#submit_btn').prop('disabled', false);
             //Dropify
             var dropify = $('.dropify').dropify();
             $('.needs-validation').on('submit', function(event) {
-                var form = $(this);
+                event.preventDefault();
+                var form = $('#storeData');
+                $('#spinner').show();
+                $('#submit_btn').text('Please Wait ...');
+                $('#submit_btn').prop('disabled', true);
+                // $('#phone_details').hide();
+                $('#billing_details').show();
+                $('#submit_btn').text('Wait...');
+                var formAction = $('#storeData').attr('action');
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    url: formAction,
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-Token': csrfToken
+                    },
+                    data: new FormData(this),
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        $('#submit_btn').prop('disabled', true);
+                        var success = response.success;
+                        toastr.success(response.success);
+                        setTimeout(function() {
+                            window.location.href = '/';
+                        }, 3000);
+                    },
+                    error: function(xhr, status, error) {
+                        var errors = xhr.responseJSON.errors;
+                        console.log(errors);
+                        $('.custom-error-text').text('');
 
-                if (!form[0].checkValidity()) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                form.addClass('was-validated');
-                var isValid = true;
-
-                // Reset styles before re-validating
-                $('.feature-group').removeClass('border-danger');
-                $('input[type="radio"]').removeClass('is-invalid');
-
-                // Loop through each feature group
-                $('.feature-group').each(function() {
-                    var featureGroup = $(this);
-                    var radioButtons = featureGroup.find('input[type="radio"]');
-
-                    // Check if at least one radio button is checked in the current feature group
-                    if (radioButtons.filter(':checked').length === 0) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'Please select an option for ' + featureGroup.find(
-                                    'strong')
-                                .text()
-                                .trim(),
+                        $.each(errors, function(key, value) {
+                            // Display errors in specific spans
+                            $('#' + 'error_' + key).text(value[0]);
                         });
-                        isValid = false;
-                        featureGroup.addClass('border-danger');
-                        radioButtons.addClass('is-invalid');
-                        return false;
+                        $('#submit_btn').prop('disabled', false);
+                        $('#submit_btn').text('Submit');
+                        $('#spinner').hide();
                     }
-                });
-                if (isValid) {
-                    $('.dropify').each(function() {
-                        var fileInput = $(this);
-                        var file = fileInput[0].files[0];
-                        if (!file) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: 'Insert Image in ' + fileInput.attr('name')
-                            });
-                            isValid = false;
-                            return false;
-                        }
-                    });
-                }
 
-                if (!isValid) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                if (isValid) {
-                    event.preventDefault();
-                    $('#phone_details').hide();
-                    $('#billing_details').show();
-                    $('#submit_btn').text('Submit');
-                    var formAction = form.attr('action');
-                    var csrfToken = form.find('input[name="_token"]').val();
-                    $.ajax({
-                        url: formAction,
-                        type: 'POST',
-                        contentType: false,
-                        processData: false,
-                        data: new FormData(form[0]),
-                        headers: {
-                            'X-CSRF-Token': csrfToken
-                        },
-                        success: function(response) {
-                            var success = response.success;
-                            toastr.success(response.success);
-                            setTimeout(function() {
-                                window.location.href = '/';
-                            }, 3000);
-                        },
-                        error: function(xhr, status, error) {
-                            var errors = xhr.responseJSON.errors;
-                            $.each(errors, function(key, value) {
-                                $('#' + key + '-error').text(value[0]);
-                            });
-                        }
-                    });
-                }
+                });
+
             });
 
             $('input[name="device_defect"]').change(function() {

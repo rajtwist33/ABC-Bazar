@@ -11,19 +11,21 @@
     <div class="container">
         <button type="button" class="float-right btn btn-success mb-2" id="category_btn">Add</button>
         <a href="{{ route('admin.category.trashed') }}" class="float-right btn btn-danger mb-2">Trash</a>
-        <table class="table data-table table-responsive">
-            <thead class="thead-dark">
-                <tr>
-                    <th>No</th>
-                    <th>Image</th>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th width="105px">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table data-table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>No</th>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th width="105px">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
     </div>
 @endsection
 @section('script')

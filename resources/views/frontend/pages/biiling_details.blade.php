@@ -2,7 +2,7 @@
 <div class="col-md-6">
     <strong for="validationCustom01" class="form-label">Your Name</strong>
     <input type="text" name="name" class="form-control" id="validationCustom01" value="" required>
-    <div class="invalid-feedback" id="name-error"></div>
+    <span class="text-danger custom-error-text" id="error_name"></span>
     <div class="valid-feedback">
         Looks good!
     </div>
@@ -11,13 +11,11 @@
 <div class="col-md-6">
     <strong for="validationCustom02" class="form-label">You Phone / Whats App Number </strong>
     <input type="tel" class="form-control" name="phone" id="validationCustom02" value="" required>
-    <div class="invalid-feedback" id="phone-error"></div>
+    <span class="text-danger custom-error-text" id="error_phone"></span>
     <div class="valid-feedback">
         Looks good!
     </div>
 </div>
-
-
 <div class="col-md-6">
     <strong for="validationDefault04" class="form-label">Choose Your Province</strong>
     <select class="form-select" id="validationDefault04" name="province" required>
@@ -30,6 +28,7 @@
         <option value="Karnali  Province" disabled>Karnali Province</option>
         <option value="Sudurpaschim Province" disabled>Sudurpaschim Province</option>
     </select>
+    <span class="text-danger custom-error-text" id="error_province"></span>
     <div class="invalid-feedback">
         Please select a valid state.
     </div>
@@ -37,7 +36,7 @@
 <div class="col-md-6">
     <strong for="validationCustom03" class="form-label">City</strong>
     <input type="text" class="form-control" name="city" id="validationCustom03" required>
-    <div class="invalid-feedback" id="city-error"></div>
+    <span class="text-danger custom-error-text" id="error_city"></span>
     <div class="valid-feedback">
         Looks good!
     </div>
@@ -50,8 +49,7 @@
         <label class="form-check-label" for="invalidCheck">
             Agree to terms and conditions
         </label>
-        <div class="invalid-feedback">
-            You must agree before submitting.
-        </div>
+        <br>
+        <span class="text-danger custom-error-text" id="error_agreed"></span>
     </div>
 </div>

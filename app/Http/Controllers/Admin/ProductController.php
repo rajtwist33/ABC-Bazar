@@ -11,7 +11,7 @@ use App\Models\Admin\ProductImage;
 use App\Models\Admin\ProductImperfectionImage;
 use App\Models\Seller\SellerProduct;
 use Illuminate\Support\Facades\Auth;
-use Yajra\DataTables\Facades\Datatables;
+use DataTables;
 use RealRashid\SweetAlert\Facades\Alert;
 
 

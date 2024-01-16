@@ -7,7 +7,7 @@ use App\Models\Admin\Slider;
 use Illuminate\Http\Request;
 use App\Models\Admin\Category;
 use App\Http\Controllers\Controller;
-use Yajra\DataTables\Facades\Datatables;
+use DataTables;
 use Illuminate\Support\Facades\Validator;
 
 class SliderController extends Controller

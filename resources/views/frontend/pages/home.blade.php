@@ -9,16 +9,16 @@
         <div class="row mt-3">
             @foreach ($categories as $category)
                 <div class="col-lg-4 col-md-6">
-                    <div class="card" style="width: 18rem;">
+                    <div class="card" style="width: 100%;">
                         <img src="{{ $category != '' ? asset($category->file_path) : '' }}" class="card-img-top"
                             alt="...">
                         <div class="card-body">
-                            <a href="{{route('sell_old_mobile')}}" class="btn btn-primary col-12">Sell Your Phone </a>
+                            <a href="{{route('sell_old_mobile')}}" class="btn btn-primary col-12">Sell Phone </a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-8">
-                    <p>{!! $category->description !!}</p>
+                <div class="col-md-6 col-lg-8 fs-5">
+                    <p class="">{!! $category->description !!}</p>
                 </div>
             @endforeach
         </div>

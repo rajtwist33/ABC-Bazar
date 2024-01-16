@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('categories', Category::hascategory($request));
         });
 
-        view()->composer(['frontend.section.banner'], function ($view) use ($request) {
+        view()->composer(['frontend.layouts.section.carousel'], function ($view) use ($request) {
             $view->with('sliders', Slider::hasslider($request));
         });
     }
